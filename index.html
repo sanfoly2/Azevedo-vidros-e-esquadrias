@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azevedo Vidros e Esquadrias - Japeri RJ</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+:root{
+  --azul:#0a4d8c; --azul-claro:#1e88e5; --laranja:#ff6b00;
+  --cinza:#f4f6f8; --cinza-borda:#e0e6ed; --texto:#1a2332;
+  --verde-wpp:#25D366; --sombra:0 2px 10px rgba(0,0,0,.08);
+}
+body{ font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:var(--cinza); color:var(--texto); padding-bottom:100px; }
+header{ background:linear-gradient(135deg,var(--azul),var(--azul-claro)); color:#fff; padding:18px 16px; position:sticky; top:0; z-index:100; box-shadow:var(--sombra); }
+header h1{ font-size:20px; font-weight:800; letter-spacing:.3px; }
+header p{ font-size:13px; opacity:.9; margin-top:3px; }
+.busca-wrap{ padding:14px 16px 8px; }
+.busca-wrap input{ width:100%; padding:12px 16px; border:1px solid var(--cinza-borda); border-radius:12px; font-size:15px; outline:none; background:#fff; box-shadow:var(--sombra); }
+.filtros{ display:flex; gap:8px; padding:10px 16px 14px; overflow-x:auto; scrollbar-width:none; }
+.filtros::-webkit-scrollbar{ display:none; }
+.filtro{ padding:9px 18px; border-radius:20px; background:#fff; border:1.5px solid var(--cinza-borda); font-size:14px; font-weight:600; color:var(--texto); white-space:nowrap; cursor:pointer; transition:.2s; }
+.filtro.ativo{ background:var(--azul); color:#fff; border-color:var(--azul); }
+.produtos{ display:grid; grid-template-columns:1fr; gap:18px; padding:0 16px 30px; }
+@media(min-width:640px){ .produtos{ grid-template-columns:1fr 1fr; } }
+.card{ background:#fff; border-radius:16px; overflow:hidden; box-shadow:var(--sombra); position:relative; }
+.card-topo{ position:relative; }
+.etiqueta{ position:absolute; top:10px; left:10px; background:var(--laranja); color:#fff; font-size:11px; font-weight:800; padding:5px 10px; border-radius:20px; letter-spacing:.5px; z-index:5; display:flex; align-items:center; gap:4px; }
+.etiqueta .fogo{ display:inline-block; animation:fogo .8s infinite alternate; }
+@keyframes fogo{ from{ transform:scale(1) rotate(-3deg); } to{ transform:scale(1.25) rotate(3deg); } }
+.carrossel{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+.carrossel::-webkit-scrollbar{ display:none; }
+.carrossel img{ width:100%; flex:0 0 100%; height:230px; object-fit:cover; scroll-snap-align:start; cursor:pointer; }
+.tag-info{ position:absolute; bottom:10px; right:10px; background:rgba(0,0,0,.7); color:#fff; font-size:11px; font-weight:700; padding:5px 10px; border-radius:20px; letter-spacing:.5px; z-index:5; }
+.card-info{ padding:14px 16px 16px; }
+.card-info h3{ font-size:17px; font-weight:800; margin-bottom:6px; }
+.card-info .preco{ font-size:20px; font-weight:900; color:var(--azul); margin-bottom:12px; }
+.card-info .preco span{ font-size:12px; font-weight:600; color:#666; display:block; margin-bottom:2px; }
+.btn-config{ width:100%; padding:13px; background:var(--laranja); color:#fff; border:none; border-radius:10px; font-size:15px; font-weight:800; cursor:pointer; transition:.2s; }
+.btn-config:active{ transform:scale(.98); }
+.modal-fundo{ position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:500; display:none; align-items:flex-end; justify-content:center; }
+.modal-fundo.aberto{ display:flex; }
+@media(min-width:640px){ .modal-fundo{ align-items:center; } }
+.modal{ background:#fff; width:100%; max-width:500px; max-height:92vh; overflow-y:auto; border-radius:20px 20px 0 0; animation:subir .3s ease; }
+@media(min-width:640px){ .modal{ border-radius:20px; } }
+@keyframes subir{ from{ transform:translateY(100%); } to{ transform:translateY(0); } }
+.modal-topo{ position:sticky; top:0; background:#fff; padding:16px 20px; border-bottom:1px solid var(--cinza-borda); display:flex; justify-content:space-between; align-items:center; z-index:2; }
+.modal-topo h2{ font-size:18px; font-weight:800; }
+.btn-fechar{ background:var(--cinza); border:none; width:36px; height:36px; border-radius:50%; font-size:20px; cursor:pointer; color:#666; }
+.modal-corpo{ padding:18px 20px 24px; }
+.grupo{ margin-bottom:20px; }
+.grupo label{ display:block; font-size:14px; font-weight:700; margin-bottom:9px; color:var(--texto); }
+.opcoes{ display:flex; flex-wrap:wrap; gap:8px; }
+.opcao{ padding:10px 16px; border:2px solid var(--cinza-borda); border-radius:10px; background:#fff; font-size:14px; font-weight:600; cursor:pointer; transition:.2s; color:var(--texto); }
+.opcao.ativa{ border-color:var(--azul); background:#e8f1fb; color:var(--azul); }
+.opcao .preco-add{ font-size:11px; color:var(--laranja); display:block; font-weight:700; margin-top:2px; }
+.resumo{ background:var(--cinza); border-radius:12px; padding:14px; margin-bottom:16px; }
+.resumo-linha{ display:flex; justify-content:space-between; font-size:14px; margin-bottom:6px; }
+.resumo-linha.total{ font-size:18px; font-weight:900; color:var(--azul); margin-top:10px; padding-top:10px; border-top:2px dashed #ccc; margin-bottom:0; }
+.btn-add{ width:100%; padding:15px; background:var(--verde-wpp); color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:800; cursor:pointer; }
+.lightbox{ position:fixed; inset:0; background:rgba(0,0,0,.95); z-index:900; display:none; align-items:center; justify-content:center; padding:20px; }
+.lightbox.aberto{ display:flex; }
+.lightbox img{ max-width:100%; max-height:90vh; object-fit:contain; border-radius:10px; }
+.lightbox .fechar-lb{ position:absolute; top:20px; right:20px; background:rgba(255,255,255,.2); color:#fff; border:none; width:44px; height:44px; border-radius:50%; font-size:24px; cursor:pointer; }
+.carrinho-btn{ position:fixed; bottom:16px; right:16px; background:var(--verde-wpp); color:#fff; border:none; border-radius:50px; padding:14px 22px; font-size:16px; font-weight:800; box-shadow:0 4px 16px rgba(37,211,102,.4); cursor:pointer; z-index:200; display:flex; align-items:center; gap:8px; }
+.carrinho-btn .badge{ background:#fff; color:var(--verde-wpp); border-radius:20px; padding:2px 9px; font-size:13px; font-weight:900; }
+.item-carrinho{ background:var(--cinza); border-radius:12px; padding:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+.item-carrinho .info{ flex:1; }
+.item-carrinho h4{ font-size:14px; font-weight:800; margin-bottom:3px; }
+.item-carrinho p{ font-size:12px; color:#666; line-height:1.5; }
+.item-carrinho .valor{ font-size:15px; font-weight:900; color:var(--azul); white-space:nowrap; }
+.btn-remover{ background:none; border:none; color:#e53935; font-size:18px; cursor:pointer; padding:4px; }
+.vazio{ text-align:center; padding:30px 20px; color:#999; font-size:14px; }
+.btn-wpp{ width:100%; padding:15px; background:var(--verde-wpp); color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:800; cursor:pointer; margin-top:10px; }
+footer{ text-align:center; padding:22px 16px; font-size:12px; color:#888; }
+footer strong{ color:var(--azul); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🪟 Azevedo Vidros e Esquadrias</h1>
+  <p>Japeri - RJ · Orçamento na hora pelo WhatsApp</p>
+</header>
+
+<div class="busca-wrap">
+  <input type="text" id="campoBusca" placeholder="🔍 Buscar produto..." oninput="buscarProduto()">
+</div>
+
+<div class="filtros" id="filtros">
+  <button class="filtro ativo" onclick="filtrar('todos', this)">Todos</button>
+  <button class="filtro" onclick="filtrar('bascula', this)">Básculas</button>
+  <button class="filtro" onclick="filtrar('janela', this)">Janelas</button>
+  <button class="filtro" onclick="filtrar('porta', this)">Portas</button>
+</div>
+
+<div class="produtos" id="vitrine"></div>
+
+<footer>
+  <strong>Azevedo Vidros e Esquadrias</strong><br>
+  Japeri - RJ · WhatsApp (21) 99239-6653<br>
+  © 2025 Todos os direitos reservados
+</footer>
+
+<!-- BOTÃO CARRINHO FLUTUANTE -->
+<button class="carrinho-btn" onclick="abrirCarrinho()">
+  🛒 Carrinho <span class="badge" id="badgeCarrinho">0</span>
+</button>
+
+<!-- MODAL DE CONFIGURAÇÃO -->
+<div class="modal-fundo" id="modalFundo" onclick="if(event.target===this) fecharModal()">
+  <div class="modal">
+    <div class="modal-topo">
+      <h2 id="modalTitulo">Configurar</h2>
+      <button class="btn-fechar" onclick="fecharModal()">✕</button>
+    </div>
+    <div class="modal-corpo" id="modalCorpo"></div>
+  </div>
+</div>
+
+<!-- MODAL DO CARRINHO -->
+<div class="modal-fundo" id="carrinhoFundo" onclick="if(event.target===this) fecharCarrinho()">
+  <div class="modal">
+    <div class="modal-topo">
+      <h2>🛒 Seu Carrinho</h2>
+      <button class="btn-fechar" onclick="fecharCarrinho()">✕</button>
+    </div>
+    <div class="modal-corpo" id="carrinhoCorpo"></div>
+  </div>
+</div>
+
+<!-- LIGHTBOX (FOTO EM TELA CHEIA) -->
+<div class="lightbox" id="lightbox" onclick="fecharLightbox()">
+  <button class="fechar-lb" onclick="fecharLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+<script>
+/* ============================================================
+   ADICIONAIS (valores globais)
+   ============================================================ */
+const ADICIONAIS = {
+  vidroColorido: 30,        // Fumê / Verde (+R$ 30)
+  puxador: 50,              // Puxador (+R$ 50)
+  pelicula: 60,             // Película (+R$ 60 — só Porta 1 folha)
+  taxaCor: 0.05,            // Preto / Bronze (+5%)
+  taxaCartao: 0.07          // Cartão (+7%)
+};
+
+/* ============================================================
+   PRODUTOS
+   - coresSemTaxa / vidrosSemTaxa = sem acréscimo
+   - preco por folha (janela/porta) OU direto (báscula)
+   ============================================================ */
+const PRODUTOS = [
+
+  /* ---------- JANELA BLINDEX ---------- */
+  {
+    id: 'janela-blindex',
+    nome: 'Janela Blindex',
+    categoria: 'janela',
+    etiqueta: { texto: 'MAIS VENDIDO', fogo: true },
+
+    folhas: ['2', '4'],
+    cores: ['branco', 'preto', 'bronze'],
+    coresSemTaxa: ['branco'],
+    vidros: ['incolor', 'fumê', 'verde'],
+    vidrosSemTaxa: ['incolor'],
+    temPuxador: false,
+    puxadorPadrao: null,
+    temPelicula: false,
+
+    precosBase: {
+      '2': { '800x800': 370, '1000x1000': 430, '1200x1000': 480, '1500x1200': 600 },
+      '4': {
+        '1000x1000': 450, '1200x1000': 540, '1000x1500': 710,
+        '1500x1200': 730, '1500x1500': 790, '1200x2000': 820
+      }
+    },
+
+    /* ⚠️ TROQUE os nomes abaixo pelos reais das SUAS fotos no GitHub */
+    imagens: {
+      '2_branco': ['janela-blindex-2f-branco.jpg'],
+      '2_preto':  ['janela-blindex-2f-preto.jpg'],
+      '2_bronze': ['janela-blindex-2f-bronze.jpg'],
+      '4_branco': ['janela-blindex-4f-branco.jpg'],
+      '4_preto':  ['janela-blindex-4f-preto.jpg'],
+      '4_bronze': ['janela-blindex-4f-bronze.jpg']
+    }
+  },
+
+  /* ---------- PORTA BLINDEX DE CORRER ---------- */
+  {
+    id: 'porta-blindex',
+    nome: 'Porta Blindex de Correr',
+    categoria: 'porta',
+    etiqueta: null,
+
+    folhas: ['1', '2', '4'],
+    cores: ['branco', 'preto', 'bronze'],
+    coresSemTaxa: ['branco'],
+    vidros: ['incolor', 'fumê', 'verde'],
+    vidrosSemTaxa: ['incolor'],
+    temPuxador: true,
+    puxadorPadrao: 'sim',
+    temPelicula: true,
+    peliculaSoFolha: '1',
+
+    /* ⚠️ Preços todos R$ 100 (placeholder — cliente vai ajustar) */
+    precosBase: {
+      '1': { '2100x800': 100, '2100x900': 100, '2100x1000': 100 },
+      '2': { '2100x1600': 100, '2100x2000': 100, '2100x2500': 100, '2100x3000': 100 },
+      '4': { '2100x1600': 100, '2100x2000': 100, '2100x2500': 100, '2100x3000': 100 }
+    },
+
+    /* ⚠️ TROQUE os nomes abaixo pelos reais das SUAS fotos no GitHub */
+    imagens: {
+      '1_branco': ['porta-blindex-1f-branco.jpg'],
+      '1_preto':  ['porta-blindex-1f-preto.jpg'],
+      '1_bronze': ['porta-blindex-1f-bronze.jpg'],
+      '2_branco': ['porta-blindex-2f-branco.jpg'],
+      '2_preto':  ['porta-blindex-2f-preto.jpg'],
+      '2_bronze': ['porta-blindex-2f-bronze.jpg'],
+      '4_branco': ['porta-blindex-4f-branco.jpg'],
+      '4_preto':  ['porta-blindex-4f-preto.jpg'],
+      '4_bronze': ['porta-blindex-4f-bronze.jpg']
+    }
+  },
+
+  /* ---------- BÁSCULA DE BLINDEX (NOVA) ---------- */
+  {
+    id: 'bascula-blindex',
+    nome: 'Báscula de Blindex',
+    categoria: 'bascula',
+    etiqueta: null,
+
+    folhas: null,                            // ❌ sem folhas
+    cores: ['branco', 'preto', 'brilho', 'bronze'],
+    coresSemTaxa: ['branco', 'brilho'],      // branco e brilho sem taxa
+    vidros: ['incolor', 'fumê', 'verde'],
+    vidrosSemTaxa: ['incolor'],
+    temPuxador: false,                       // ❌ sem puxador
+    puxadorPadrao: null,
+    temPelicula: false,                      // ❌ sem película
+
+    /* Preço direto por medida (sem nível de folhas) */
+    precosBase: {
+      '500x500': 100,
+      '600x600': 100,
+      '700x700': 100,
+      '800x800': 100
+    },
+
+    /* Foto muda conforme a COR escolhida */
+    imagens: {
+      'branco': ['bascula-blindex1.jpg'],
+      'preto':  ['bascula-blindex2.jpg'],
+      'brilho': ['bascula-blindex3.jpeg'],
+      'bronze': ['bascula-blindex4.png']
+    }
+  }
+
+];
+
+/* ============================================================
+   MENOR PREÇO (usado no "A partir de R$...")
+   ============================================================ */
+function getMenorPreco(produto) {
+  let menor = Infinity;
+  const base = produto.precosBase;
+
+  if (produto.folhas) {
+    // percorre cada folha → cada medida
+    for (const f in base) {
+      for (const medida in base[f]) {
+        if (base[f][medida] < menor) menor = base[f][medida];
+      }
+    }
+  } else {
+    // produto sem folhas (ex: báscula)
+    for (const medida in base) {
+      if (base[medida] < menor) menor = base[medida];
+    }
+  }
+  return menor === Infinity ? 0 : menor;
+}
+/* ============================================================
+   ESTADO GLOBAL
+   ============================================================ */
+let carrinho = [];
+let configAtual = null;   // guarda o que está sendo configurado no modal
+
+/* ============================================================
+   RENDERIZAR VITRINE
+   ============================================================ */
+function renderizarVitrine(lista) {
+  const vitrine = document.getElementById('vitrine');
+  vitrine.innerHTML = '';
+
+  if (lista.length === 0) {
+    vitrine.innerHTML = '<div class="vazio">Nenhum produto encontrado 😕</div>';
+    return;
+  }
+
+  lista.forEach(prod => {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    /* Foto inicial do carrossel:
+       - produtos COM folhas: primeira folha + primeira cor
+       - produtos SEM folhas: primeira cor */
+    let chaveInicial;
+    if (prod.folhas) {
+      chaveInicial = prod.folhas[0] + '_' + prod.cores[0];
+    } else {
+      chaveInicial = prod.cores[0];
+    }
+    const fotos = prod.imagens[chaveInicial] || [];
+
+    /* Etiqueta (com foguinho se tiver) */
+    let etiquetaHTML = '';
+    if (prod.etiqueta) {
+      etiquetaHTML = `
+        <div class="etiqueta">
+          ${prod.etiqueta.fogo ? '<span class="fogo">🔥</span>' : ''}
+          ${prod.etiqueta.texto}
+        </div>`;
+    }
+
+    /* Monta carrossel */
+    const imagensHTML = fotos.map(src =>
+      `<img src="${src}" alt="${prod.nome}" onclick="abrirLightbox('${src}')">`
+    ).join('');
+
+    card.innerHTML = `
+      <div class="card-topo">
+        ${etiquetaHTML}
+        <div class="carrossel" id="carrossel-${prod.id}">${imagensHTML}</div>
+        <div class="tag-info" id="tag-${prod.id}">${gerarTagInfo(prod)}</div>
+      </div>
+      <div class="card-info">
+        <h3>${prod.nome}</h3>
+        <div class="preco">
+          <span>A partir de</span>
+          R$ ${getMenorPreco(prod).toFixed(2).replace('.', ',')}
+        </div>
+        <button class="btn-config" onclick="abrirConfig('${prod.id}')">
+          Configurar e Orçar
+        </button>
+      </div>
+    `;
+
+    vitrine.appendChild(card);
+  });
+}
+
+/* ============================================================
+   TAG INFORMATIVA (ex: "4 FOLHAS / BRANCO" ou "BRANCO")
+   ============================================================ */
+function gerarTagInfo(prod) {
+  if (prod.folhas) {
+    return `${prod.folhas[0]} FOLHAS / ${prod.cores[0].toUpperCase()}`;
+  }
+  return prod.cores[0].toUpperCase();
+}
+
+/* ============================================================
+   TROCAR FOTO (chamada quando muda folha ou cor no MODAL)
+   ============================================================ */
+function trocarFoto(produtoId) {
+  const prod = PRODUTOS.find(p => p.id === produtoId);
+  if (!prod) return;
+
+  const carrossel = document.getElementById('carrossel-' + produtoId);
+  const tag = document.getElementById('tag-' + produtoId);
+  if (!carrossel) return;
+
+  let chave;
+  if (prod.folhas) {
+    chave = configAtual.folha + '_' + configAtual.cor;
+  } else {
+    chave = configAtual.cor;
+  }
+
+  const fotos = prod.imagens[chave] || [];
+  carrossel.innerHTML = fotos.map(src =>
+    `<img src="${src}" alt="${prod.nome}" onclick="abrirLightbox('${src}')">`
+  ).join('');
+
+  /* Atualiza a tag */
+  if (prod.folhas) {
+    tag.textContent = `${configAtual.folha} FOLHAS / ${configAtual.cor.toUpperCase()}`;
+  } else {
+    tag.textContent = configAtual.cor.toUpperCase();
+  }
+}
+
+/* ============================================================
+   BUSCA
+   ============================================================ */
+function buscarProduto() {
+  const termo = document.getElementById('campoBusca').value.toLowerCase().trim();
+  const filtroAtivo = document.querySelector('.filtro.ativo')?.textContent.toLowerCase() || 'todos';
+  aplicarFiltroEBusca(filtroAtivo, termo);
+}
+
+/* ============================================================
+   FILTRO POR CATEGORIA
+   ============================================================ */
+function filtrar(categoria, botao) {
+  document.querySelectorAll('.filtro').forEach(b => b.classList.remove('ativo'));
+  botao.classList.add('ativo');
+
+  const termo = document.getElementById('campoBusca').value.toLowerCase().trim();
+  aplicarFiltroEBusca(categoria, termo);
+}
+
+function aplicarFiltroEBusca(categoria, termo) {
+  let lista = PRODUTOS;
+
+  if (categoria === 'janelas') lista = lista.filter(p => p.categoria === 'janela');
+  else if (categoria === 'portas') lista = lista.filter(p => p.categoria === 'porta');
+  else if (categoria === 'básculas') lista = lista.filter(p => p.categoria === 'bascula');
+
+  if (termo) {
+    lista = lista.filter(p => p.nome.toLowerCase().includes(termo));
+  }
+
+  renderizarVitrine(lista);
+}
+
+/* ============================================================
+   INICIALIZAÇÃO
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  renderizarVitrine(PRODUTOS);
+});
+
+/* ============================================================
+   LIGHTBOX (foto em tela cheia)
+   ============================================================ */
+function abrirLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('aberto');
+}
+function fecharLightbox() {
+  document.getElementById('lightbox').classList.remove('aberto');
+}
+/* ============================================================
+   ABRIR CONFIGURAÇÃO (chamado ao clicar em "Configurar e Orçar")
+   ============================================================ */
+function abrirConfig(produtoId) {
+  const prod = PRODUTOS.find(p => p.id === produtoId);
+  if (!prod) return;
+
+  /* Estado inicial da configuração */
+  configAtual = {
+    produtoId: prod.id,
+    folha: prod.folhas ? prod.folhas[0] : null,
+    cor: prod.cores[0],
+    vidro: prod.vidros[0],
+    puxador: prod.temPuxador ? prod.puxadorPadrao : null,
+    pelicula: false,
+    pagamento: 'pix',
+    /* medidas padrão = primeira do conjunto */
+    medida: null
+  };
+
+  /* Define a medida inicial conforme o tipo de produto */
+  if (prod.folhas) {
+    const medidas = Object.keys(prod.precosBase[configAtual.folha]);
+    configAtual.medida = medidas[0];
+  } else {
+    const medidas = Object.keys(prod.precosBase);
+    configAtual.medida = medidas[0];
+  }
+
+  document.getElementById('modalTitulo').textContent = prod.nome;
+  montarModal();
+  document.getElementById('modalFundo').classList.add('aberto');
+}
+
+function fecharModal() {
+  document.getElementById('modalFundo').classList.remove('aberto');
+  configAtual = null;
+}
+
+/* ============================================================
+   MONTAR O CONTEÚDO DO MODAL
+   ============================================================ */
+function montarModal() {
+  const prod = PRODUTOS.find(p => p.id === configAtual.produtoId);
+  const corpo = document.getElementById('modalCorpo');
+  let html = '';
+
+  /* ---------- FOLHAS (só se tiver) ---------- */
+  if (prod.folhas) {
+    html += '<div class="grupo"><label>Folhas</label><div class="opcoes">';
+    prod.folhas.forEach(f => {
+      const ativa = configAtual.folha === f ? 'ativa' : '';
+      html += `<button class="opcao ${ativa}" onclick="setFolha('${f}')">${f} Folha${f === '1' ? '' : 's'}</button>`;
+    });
+    html += '</div></div>';
+  }
+
+  /* ---------- MEDIDA ---------- */
+  let medidas;
+  if (prod.folhas) {
+    medidas = Object.keys(prod.precosBase[configAtual.folha]);
+  } else {
+    medidas = Object.keys(prod.precosBase);
+  }
+  html += '<div class="grupo"><label>Medida (largura x altura em cm)</label><div class="opcoes">';
+  medidas.forEach(m => {
+    const ativa = configAtual.medida === m ? 'ativa' : '';
+    html += `<button class="opcao ${ativa}" onclick="setMedida('${m}')">${m.replace('x', ' × ')}</button>`;
+  });
+  html += '</div></div>';
+
+  /* ---------- VIDRO ---------- */
+  html += '<div class="grupo"><label>Vidro</label><div class="opcoes">';
+  prod.vidros.forEach(v => {
+    const ativa = configAtual.vidro === v ? 'ativa' : '';
+    const semTaxa = prod.vidrosSemTaxa.includes(v);
+    const add = semTaxa ? '' : `<span class="preco-add">+ R$ ${ADICIONAIS.vidroColorido}</span>`;
+    html += `<button class="opcao ${ativa}" onclick="setVidro('${v}')">${v.charAt(0).toUpperCase() + v.slice(1)}${add}</button>`;
+  });
+  html += '</div></div>';
+
+  /* ---------- COR DO ALUMÍNIO ---------- */
+  html += '<div class="grupo"><label>Cor do Alumínio</label><div class="opcoes">';
+  prod.cores.forEach(c => {
+    const ativa = configAtual.cor === c ? 'ativa' : '';
+    const semTaxa = prod.coresSemTaxa.includes(c);
+    const add = semTaxa ? '' : `<span class="preco-add">+ 5%</span>`;
+    html += `<button class="opcao ${ativa}" onclick="setCor('${c}')">${c.charAt(0).toUpperCase() + c.slice(1)}${add}</button>`;
+  });
+  html += '</div></div>';
+
+  /* ---------- PUXADOR (só se tiver) ---------- */
+  if (prod.temPuxador) {
+    html += '<div class="grupo"><label>Puxador</label><div class="opcoes">';
+    const simAtivo = configAtual.puxador === 'sim' ? 'ativa' : '';
+    const naoAtivo = configAtual.puxador === 'nao' ? 'ativa' : '';
+    html += `<button class="opcao ${simAtivo}" onclick="setPuxador('sim')">Sim <span class="preco-add">+ R$ ${ADICIONAIS.puxador}</span></button>`;
+    html += `<button class="opcao ${naoAtivo}" onclick="setPuxador('nao')">Não</button>`;
+    html += '</div></div>';
+  }
+
+  /* ---------- PELÍCULA (só se tiver, e só na folha permitida) ---------- */
+  if (prod.temPelicula && configAtual.folha === prod.peliculaSoFolha) {
+    const ativo = configAtual.pelicula ? 'ativa' : '';
+    html += '<div class="grupo"><label>Película</label><div class="opcoes">';
+    html += `<button class="opcao ${ativo}" onclick="setPelicula()">Adicionar <span class="preco-add">+ R$ ${ADICIONAIS.pelicula}</span></button>`;
+    html += '</div></div>';
+  }
+
+  /* ---------- FORMA DE PAGAMENTO ---------- */
+  html += '<div class="grupo"><label>Forma de Pagamento</label><div class="opcoes">';
+  const pixAtivo = configAtual.pagamento === 'pix' ? 'ativa' : '';
+  const cartaoAtivo = configAtual.pagamento === 'cartao' ? 'ativa' : '';
+  html += `<button class="opcao ${pixAtivo}" onclick="setPagamento('pix')">Pix / Dinheiro</button>`;
+  html += `<button class="opcao ${cartaoAtivo}" onclick="setPagamento('cartao')">Cartão <span class="preco-add">+ 7%</span></button>`;
+  html += '</div></div>';
+
+  /* ---------- RESUMO + BOTÃO ---------- */
+  const calc = calcularPreco();
+  html += `
+    <div class="resumo">
+      <div class="resumo-linha"><span>Preço base</span><span>R$ ${calc.base.toFixed(2).replace('.', ',')}</span></div>
+      ${calc.addVidro ? `<div class="resumo-linha"><span>Vidro colorido</span><span>+ R$ ${calc.addVidro.toFixed(2).replace('.', ',')}</span></div>` : ''}
+      ${calc.addCor ? `<div class="resumo-linha"><span>Cor do alumínio (5%)</span><span>+ R$ ${calc.addCor.toFixed(2).replace('.', ',')}</span></div>` : ''}
+      ${calc.addPuxador ? `<div class="resumo-linha"><span>Puxador</span><span>+ R$ ${calc.addPuxador.toFixed(2).replace('.', ',')}</span></div>` : ''}
+      ${calc.addPelicula ? `<div class="resumo-linha"><span>Película</span><span>+ R$ ${calc.addPelicula.toFixed(2).replace('.', ',')}</span></div>` : ''}
+      ${calc.addCartao ? `<div class="resumo-linha"><span>Taxa do cartão (7%)</span><span>+ R$ ${calc.addCartao.toFixed(2).replace('.', ',')}</span></div>` : ''}
+      <div class="resumo-linha total"><span>Total</span><span>R$ ${calc.total.toFixed(2).replace('.', ',')}</span></div>
+    </div>
+    <button class="btn-add" onclick="adicionarAoCarrinho()">➕ Adicionar ao Carrinho</button>
+  `;
+
+  corpo.innerHTML = html;
+}
+
+/* ============================================================
+   SETTERS (atualizam o estado e re-montam o modal)
+   ============================================================ */
+function setFolha(f) {
+  configAtual.folha = f;
+  /* ao trocar folha, redefine medida inicial */
+  const prod = PRODUTOS.find(p => p.id === configAtual.produtoId);
+  configAtual.medida = Object.keys(prod.precosBase[f])[0];
+  /* película pode deixar de ser válida */
+  if (configAtual.folha !== prod.peliculaSoFolha) configAtual.pelicula = false;
+  trocarFoto(prod.id);
+  montarModal();
+}
+function setMedida(m) { configAtual.medida = m; montarModal(); }
+function setVidro(v) { configAtual.vidro = v; montarModal(); }
+function setCor(c) {
+  configAtual.cor = c;
+  trocarFoto(configAtual.produtoId);
+  montarModal();
+}
+function setPuxador(p) { configAtual.puxador = p; montarModal(); }
+function setPelicula() { configAtual.pelicula = !configAtual.pelicula; montarModal(); }
+function setPagamento(p) { configAtual.pagamento = p; montarModal(); }
+
+/* ============================================================
+   CÁLCULO DE PREÇO (com todos os adicionais)
+   ============================================================ */
+function calcularPreco() {
+  const prod = PRODUTOS.find(p => p.id === configAtual.produtoId);
+
+  /* 1) Preço base */
+  let base;
+  if (prod.folhas) {
+    base = prod.precosBase[configAtual.folha][configAtual.medida];
+  } else {
+    base = prod.precosBase[configAtual.medida];
+  }
+
+  /* 2) Adicional do vidro (só se não for da lista sem taxa) */
+  const addVidro = prod.vidrosSemTaxa.includes(configAtual.vidro) ? 0 : ADICIONAIS.vidroColorido;
+
+  /* 3) Adicional da cor (5% sobre base + vidro) */
+  const subtotal1 = base + addVidro;
+  const addCor = prod.coresSemTaxa.includes(configAtual.cor) ? 0 : subtotal1 * ADICIONAIS.taxaCor;
+
+  /* 4) Puxador (fixo) */
+  const addPuxador = (prod.temPuxador && configAtual.puxador === 'sim') ? ADICIONAIS.puxador : 0;
+
+  /* 5) Película (fixo) */
+  const addPelicula = configAtual.pelicula ? ADICIONAIS.pelicula : 0;
+
+  const subtotal2 = subtotal1 + addCor + addPuxador + addPelicula;
+
+  /* 6) Taxa do cartão (7% sobre tudo) */
+  const addCartao = configAtual.pagamento === 'cartao' ? subtotal2 * ADICIONAIS.taxaCartao : 0;
+
+  const total = subtotal2 + addCartao;
+
+  return { base, addVidro, addCor, addPuxador, addPelicula, addCartao, total };
+}
+/* ============================================================
+   ADICIONAR AO CARRINHO
+   ============================================================ */
+function adicionarAoCarrinho() {
+  const prod = PRODUTOS.find(p => p.id === configAtual.produtoId);
+  const calc = calcularPreco();
+
+  /* Monta o objeto do item */
+  const item = {
+    id: Date.now(),                       // ID único pra poder remover
+    produto: prod.nome,
+    folha: configAtual.folha,
+    medida: configAtual.medida,
+    vidro: configAtual.vidro,
+    cor: configAtual.cor,
+    puxador: configAtual.puxador,
+    pelicula: configAtual.pelicula,
+    pagamento: configAtual.pagamento,
+    temFolhas: !!prod.folhas,
+    temPuxador: prod.temPuxador,
+    total: calc.total
+  };
+
+  carrinho.push(item);
+  atualizarBadge();
+  fecharModal();
+  abrirCarrinho();                        // já abre o carrinho pra ver o item
+}
+
+/* ============================================================
+   ATUALIZAR CONTADOR DO BOTÃO FLUTUANTE
+   ============================================================ */
+function atualizarBadge() {
+  document.getElementById('badgeCarrinho').textContent = carrinho.length;
+}
+
+/* ============================================================
+   ABRIR / FECHAR CARRINHO
+   ============================================================ */
+function abrirCarrinho() {
+  renderizarCarrinho();
+  document.getElementById('carrinhoFundo').classList.add('aberto');
+}
+function fecharCarrinho() {
+  document.getElementById('carrinhoFundo').classList.remove('aberto');
+}
+
+/* ============================================================
+   RENDERIZAR CARRINHO
+   ============================================================ */
+function renderizarCarrinho() {
+  const corpo = document.getElementById('carrinhoCorpo');
+
+  if (carrinho.length === 0) {
+    corpo.innerHTML = '<div class="vazio">🛒 Seu carrinho está vazio.<br>Escolha um produto pra começar!</div>';
+    return;
+  }
+
+  let html = '';
+  let totalGeral = 0;
+
+  carrinho.forEach(item => {
+    totalGeral += item.total;
+
+    /* Monta a descrição com os detalhes que existirem */
+    let detalhes = [];
+    if (item.temFolhas) detalhes.push(`<strong>${item.folha} folha${item.folha === '1' ? '' : 's'}</strong>`);
+    detalhes.push(`Medida: ${item.medida.replace('x', ' × ')} cm`);
+    detalhes.push(`Vidro: ${item.vidro}`);
+    detalhes.push(`Alumínio: ${item.cor}`);
+    if (item.temPuxador && item.puxador === 'sim') detalhes.push('Com puxador');
+    if (item.pelicula) detalhes.push('Com película');
+    detalhes.push(`Pagamento: ${item.pagamento === 'pix' ? 'Pix/Dinheiro' : 'Cartão'}`);
+
+    html += `
+      <div class="item-carrinho">
+        <div class="info">
+          <h4>${item.produto}</h4>
+          <p>${detalhes.join(' · ')}</p>
+        </div>
+        <div style="text-align:right">
+          <div class="valor">R$ ${item.total.toFixed(2).replace('.', ',')}</div>
+          <button class="btn-remover" onclick="removerItem(${item.id})">🗑️</button>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `
+    <div class="resumo" style="margin-top:16px">
+      <div class="resumo-linha total">
+        <span>Total do Pedido</span>
+        <span>R$ ${totalGeral.toFixed(2).replace('.', ',')}</span>
+      </div>
+    </div>
+    <button class="btn-wpp" onclick="enviarWhatsApp()">📲 Enviar Pedido pelo WhatsApp</button>
+  `;
+
+  corpo.innerHTML = html;
+}
+
+/* ============================================================
+   REMOVER ITEM
+   ============================================================ */
+function removerItem(id) {
+  carrinho = carrinho.filter(i => i.id !== id);
+  atualizarBadge();
+  renderizarCarrinho();
+}
+
+/* ============================================================
+   ENVIAR PARA O WHATSAPP
+   ============================================================ */
+function enviarWhatsApp() {
+  if (carrinho.length === 0) return;
+
+  const numero = '5521992396653';
+  let texto = '🪟 *NOVO PEDIDO — Azevedo Vidros*\n';
+  texto += '━━━━━━━━━━━━━━━━━━━━\n\n';
+
+  let totalGeral = 0;
+
+  carrinho.forEach((item, i) => {
+    totalGeral += item.total;
+    texto += `*${i + 1}. ${item.produto}*\n`;
+    if (item.temFolhas) texto += `• Folhas: ${item.folha}\n`;
+    texto += `• Medida: ${item.medida.replace('x', ' × ')} cm\n`;
+    texto += `• Vidro: ${item.vidro}\n`;
+    texto += `• Alumínio: ${item.cor}\n`;
+    if (item.temPuxador && item.puxador === 'sim') texto += `• Puxador: sim\n`;
+    if (item.pelicula) texto += `• Película: sim\n`;
+    texto += `• Pagamento: ${item.pagamento === 'pix' ? 'Pix/Dinheiro' : 'Cartão'}\n`;
+    texto += `• Valor: R$ ${item.total.toFixed(2).replace('.', ',')}\n\n`;
+  });
+
+  texto += '━━━━━━━━━━━━━━━━━━━━\n';
+  texto += `💰 *TOTAL: R$ ${totalGeral.toFixed(2).replace('.', ',')}*\n\n`;
+  texto += 'Aguardo o contato para finalizar! 🙏';
+
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+  window.open(url, '_blank');
+}
+
+/* ============================================================
+   INICIALIZAÇÃO FINAL
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  atualizarBadge();
+});
+</script>
+</body>
+</html>
