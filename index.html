@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azevedo Vidros e Esquadrias | Catálogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Poppins', 'system-ui', 'sans-serif'],
+      }}}
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-display { font-family: 'Poppins', system-ui, sans-serif; }
+    .bg-header-gradient { background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 50%, #0f172a 100%); }
+    .bg-shopee-orange { background-color: #ee4d2d; }
+    .text-shopee-orange { color: #ee4d2d; }
+    .badge-discount { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+
+    /* 🔥 FOGUINHO ANIMADO */
+    .fire-icon {
+      display: inline-block;
+      animation: fireFlicker 0.6s ease-in-out infinite alternate;
+      transform-origin: center bottom;
+    }
+    @keyframes fireFlicker {
+      0%   { transform: scale(1) rotate(-3deg); filter: drop-shadow(0 0 2px #fbbf24); }
+      50%  { transform: scale(1.15) rotate(2deg); filter: drop-shadow(0 0 5px #f97316); }
+      100% { transform: scale(1.05) rotate(-2deg); filter: drop-shadow(0 0 3px #ef4444); }
+    }
+
+    .carousel-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .carousel-track::-webkit-scrollbar { display: none; }
+    .carousel-slide {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .carousel-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      transition: all .2s;
+    }
+    .carousel-dot.active {
+      background: #fff;
+      width: 16px;
+      border-radius: 3px;
+    }
+
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    #lightbox.active { display: flex; }
+    .lightbox-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      width: 100%;
+      height: 100%;
+    }
+    .lightbox-track::-webkit-scrollbar { display: none; }
+    .lightbox-slide {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox-slide img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased">
+
+  <header class="bg-header-gradient text-white sticky top-0 z-40 shadow-xl">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-900 p-2.5 rounded-xl font-bold text-xl flex items-center justify-center shadow-lg border border-amber-200/30">
+          <i data-lucide="layers" class="w-6 h-6 text-slate-950"></i>
+        </div>
+        <div>
+          <h1 class="font-display text-2xl font-black tracking-tight text-white leading-none drop-shadow">Azevedo</h1>
+          <p class="text-[11px] text-amber-300 font-semibold uppercase tracking-[0.2em] mt-0.5">Vidros &amp; Esquadrias</p>
+        </div>
+      </div>
+
+      <div class="flex-1 max-w-xl hidden md:block">
+        <div class="relative">
+          <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Buscar produtos..." 
+                 class="w-full pl-4 pr-10 py-2.5 rounded-lg border-2 border-transparent focus:border-amber-400 text-slate-900 text-sm shadow-md focus:outline-none font-medium">
+          <button class="absolute right-2 top-2.5 bg-amber-500 text-slate-950 p-1 rounded-md hover:bg-amber-400 transition">
+            <i data-lucide="search" class="w-4 h-4 font-bold"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="toggleCartModal()" class="relative p-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition shadow-lg flex items-center gap-2">
+          <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+          <span class="hidden sm:inline text-xs font-bold uppercase tracking-wide">Meu Pedido</span>
+          <span id="cartCount" class="bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow">0</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="px-4 pb-3 md:hidden">
+      <div class="relative">
+        <input type="text" id="searchInputMobile" oninput="handleSearchMobile()" placeholder="Buscar produtos..." 
+               class="w-full pl-4 pr-10 py-2 rounded-lg text-slate-900 text-sm font-medium focus:outline-none">
+        <button class="absolute right-2 top-2 text-amber-600">
+          <i data-lucide="search" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <nav class="bg-slate-900/90 backdrop-blur border-t border-blue-400/20 px-4 py-2.5 text-xs md:text-sm overflow-x-auto">
+      <div class="max-w-7xl mx-auto flex gap-4 whitespace-nowrap items-center">
+        <button onclick="filterCategory('todos')" class="font-display bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded-full hover:bg-amber-400 transition tracking-wide">Todos</button>
+        <button onclick="filterCategory('janelas')" class="text-blue-200 hover:text-white px-3 py-1 rounded-full hover:bg-white/10 transition font-medium tracking-wide">Janelas</button>
+        <button onclick="filterCategory('portas')" class="text-blue-200 hover:text-white px-3 py-1 rounded-full hover:bg-white/10 transition font-medium tracking-wide">Portas</button>
+      </div>
+    </nav>
+  </header>
+
+  <section class="max-w-7xl mx-auto px-4 mt-6">
+    <div class="bg-gradient-to-r from-shopee-orange via-orange-500 to-amber-500 rounded-2xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 border-2 border-orange-300/30">
+      <div class="space-y-3 text-center md:text-left">
+        <span class="font-display bg-white text-orange-600 font-bold text-[11px] uppercase px-3 py-1 rounded-full shadow tracking-[0.15em]">Serralheria &amp; Vidraçaria</span>
+        <h2 class="font-display text-3xl md:text-5xl font-black tracking-tight leading-tight text-slate-900">Vidros e Esquadrias Sob Medida</h2>
+        <p class="text-slate-800 text-sm md:text-base max-w-lg font-medium leading-relaxed">Escolha as opções, veja o preço na hora e envie seu pedido direto pelo WhatsApp.</p>
+      </div>
+      <a href="https://wa.me/5521992396653?text=Olá,%20gostaria%20de%20um%20orçamento!" target="_blank" 
+         class="font-display bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition transform hover:scale-105 flex items-center gap-2 whitespace-nowrap border border-emerald-300/40 tracking-wide">
+        <i data-lucide="message-circle" class="w-5 h-5"></i> Falar no WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="font-display text-xl md:text-2xl font-extrabold text-slate-900 flex items-center gap-2 tracking-tight">
+        <i data-lucide="sparkles" class="text-amber-500"></i> Nossos Produtos
+      </h3>
+      <span id="productCount" class="text-xs font-semibold bg-blue-100 text-blue-800 px-3 py-1 rounded-full tracking-wide">Carregando...</span>
+    </div>
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </main>
+
+  <div id="configModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div class="p-4 bg-header-gradient text-white flex justify-between items-center">
+        <h3 class="font-display font-bold text-lg flex items-center gap-2 tracking-tight">
+          <i data-lucide="settings-2" class="text-amber-400"></i> Configurar Produto
+        </h3>
+        <button onclick="closeConfigModal()" class="text-slate-300 hover:text-white">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="p-4 overflow-y-auto flex-1 space-y-4" id="configContent"></div>
+      <div class="p-4 border-t bg-slate-50 space-y-3">
+        <div class="flex justify-between items-center font-display font-extrabold text-lg text-slate-900 tracking-tight">
+          <span>Preço Total:</span>
+          <span id="configPrice" class="text-emerald-600">R$ 0,00</span>
+        </div>
+        <p class="text-xs text-slate-500 leading-relaxed">Valores estimados. Sujeitos a medição no local.</p>
+        <button onclick="addConfigToCart()" class="font-display w-full bg-slate-900 hover:bg-shopee-orange text-white font-bold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm uppercase tracking-wide">
+          <i data-lucide="plus" class="w-5 h-5"></i> Adicionar ao Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cartModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-4 bg-header-gradient text-white flex justify-between items-center">
+        <h3 class="font-display font-bold text-lg flex items-center gap-2 tracking-tight">
+          <i data-lucide="shopping-bag" class="text-amber-400"></i> Resumo do Pedido
+        </h3>
+        <button onclick="toggleCartModal()" class="text-slate-300 hover:text-white">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="cartItems" class="p-4 overflow-y-auto flex-1 space-y-3"></div>
+      <div class="p-4 border-t bg-slate-50 space-y-3">
+        <div class="flex justify-between font-display font-extrabold text-lg text-slate-900 tracking-tight">
+          <span>Total Estimado:</span>
+          <span id="cartTotal" class="text-emerald-600">R$ 0,00</span>
+        </div>
+        <p class="text-xs text-slate-500 leading-relaxed">Valores sujeitos a medição no local.</p>
+        <button onclick="checkoutWhatsApp()" class="font-display w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm uppercase tracking-wide">
+          <i data-lucide="send" class="w-5 h-5"></i> Enviar via WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="lightbox" onclick="closeLightbox(event)">
+    <button onclick="closeLightbox(event)" class="absolute top-4 right-4 z-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 rounded-full transition">
+      <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
+    <div id="lightboxTrack" class="lightbox-track"></div>
+    <div id="lightboxDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 bg-black/40 backdrop-blur-sm px-3 py-2 rounded-full"></div>
+  </div>
+    <script>
+    /* =========================================================
+       ⚙️ CONFIGURAÇÕES GERAIS
+       ========================================================= */
+    const WHATSAPP_NUMERO = "5521992396653";
+
+    /* =========================================================
+       🪟 TABELAS — JANELA BLINDEX
+       ========================================================= */
+    const JANELA_2_FOLHAS = {
+      "800x800": 370,
+      "1000x1000": 430,
+      "1200x1000": 480,
+      "1500x1200": 600
+    };
+
+    const JANELA_4_FOLHAS = {
+      "1000x1000": 450,
+      "1200x1000": 540,
+      "1000x1500": 710,
+      "1500x1200": 730,
+      "1500x1500": 790,
+      "1200x2000": 820
+    };
+
+    /* =========================================================
+       🚪 TABELAS — PORTA BLINDEX DE CORRER
+       ========================================================= */
+    const PORTA_1_FOLHA = {
+      "2100x800": 100,
+      "2100x900": 100,
+      "2100x1000": 100
+    };
+
+    const PORTA_2_FOLHAS = {
+      "2100x1600": 100,
+      "2100x2000": 100,
+      "2100x2500": 100,
+      "2100x3000": 100
+    };
+
+    const PORTA_4_FOLHAS = {
+      "2100x1600": 100,
+      "2100x2000": 100,
+      "2100x2500": 100,
+      "2100x3000": 100
+    };
+
+    /* =========================================================
+       🏷️ LABELS DAS MEDIDAS
+       ========================================================= */
+    const MEDIDAS_LABEL = {
+      "800x800": "800 × 800 mm",
+      "1000x1000": "1000 × 1000 mm",
+      "1200x1000": "1200 × 1000 mm",
+      "1200x1200": "1200 × 1200 mm",
+      "1000x1500": "1000 × 1500 mm",
+      "1500x1200": "1500 × 1200 mm",
+      "1500x1500": "1500 × 1500 mm",
+      "1200x2000": "1200 × 2000 mm",
+      "1500x2000": "1500 × 2000 mm",
+      "2100x800": "2100 × 800 mm",
+      "2100x900": "2100 × 900 mm",
+      "2100x1000": "2100 × 1000 mm",
+      "2100x1600": "2100 × 1600 mm",
+      "2100x2000": "2100 × 2000 mm",
+      "2100x2500": "2100 × 2500 mm",
+      "2100x3000": "2100 × 3000 mm"
+    };
+
+    /* =========================================================
+       💰 ADICIONAIS E TAXAS
+       ========================================================= */
+    const ADICIONAL_FUME_VERDE = 30;
+    const ADICIONAL_ALUMINIO_ESPECIAL = 0.05;
+    const ADICIONAL_PUXADOR = 50;
+    const ADICIONAL_PELICULA = 60;
+    const TAXA_CARTAO = 0.07;
+
+    /* =========================================================
+       🛍️ PRODUTOS
+       ========================================================= */
+    const products = [
+      {
+        id: 1,
+        title: "Janela Blindex",
+        category: "janelas",
+        tipo: "janela-blindex",
+        description: "Vidro temperado com alumínio. Escolha folhas, medida, cor do vidro, alumínio e forma de pagamento.",
+        badge: "MAIS VENDIDO",
+        badgeBg: "bg-amber-500 text-slate-950",
+        images: [
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/janela-blindex.jpg",  folhas: "4 FOLHAS", cor: "BRANCO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/janela-blindex1.png", folhas: "4 FOLHAS", cor: "PRETO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/janela-blindex2.png", folhas: "4 FOLHAS", cor: "BRILHO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/janela-blindex3.png", folhas: "4 FOLHAS", cor: "BRONZE" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/janela-blindex4.jpg", folhas: "2 FOLHAS", cor: "BRANCO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/janela-blindex5.jpg", folhas: "2 FOLHAS", cor: "PRETO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/janela-blindex6.jpg", folhas: "2 FOLHAS", cor: "BRILHO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/janela-blindex7.jpg", folhas: "2 FOLHAS", cor: "BRONZE" }
+        ]
+      },
+      {
+        id: 2,
+        title: "Porta Blindex de Correr",
+        category: "portas",
+        tipo: "porta-blindex",
+        description: "Porta de correr em vidro temperado. Escolha folhas, medida, cor do vidro, alumínio e forma de pagamento.",
+        badge: null,
+        badgeBg: null,
+        images: [
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/porta-blindex1.jpeg", folhas: "4 FOLHAS", cor: "BRANCO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/porta-blindex2.jpg",  folhas: "4 FOLHAS", cor: "PRETO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/porta-blindex3.jpeg", folhas: "4 FOLHAS", cor: "BRILHO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/porta-blindex4.jpg",  folhas: "4 FOLHAS", cor: "BRONZE" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/Iporta-blindex1.jpeg", folhas: "1 FOLHA", cor: "BRANCO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/Iporta-blindex2.jpeg", folhas: "1 FOLHA", cor: "PRETO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/Iporta-blindex3.jpg",  folhas: "1 FOLHA", cor: "BRILHO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/Iporta-blindex4.jpg",  folhas: "1 FOLHA", cor: "BRONZE" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/IIporta-blindex1.jpeg", folhas: "2 FOLHAS", cor: "BRANCO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/IIporta-blindex2.jpeg", folhas: "2 FOLHAS", cor: "PRETO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/IIporta-blindex3.jpg",  folhas: "2 FOLHAS", cor: "BRILHO" },
+          { url: "https://raw.githubusercontent.com/sanfoly2/Azevedo-vidros-e-esquadrias/main/IIporta-blindex4.jpg",  folhas: "2 FOLHAS", cor: "BRONZE" }
+        ]
+      }
+    ];
+
+    let cart = [];
+    let currentProduct = null;
+    let currentConfig = {};
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderProducts(products);
+      lucide.createIcons();
+    });
+
+    function formatarReais(valor) {
+      return "R$ " + valor.toFixed(2).replace(".", ",");
+    }
+
+    /* =========================================================
+       💡 MENOR PREÇO — "A PARTIR DE"
+       ========================================================= */
+    function getMenorPreco(product) {
+      let tabelas = [];
+      if (product.tipo === "porta-blindex") {
+        tabelas = [PORTA_1_FOLHA, PORTA_2_FOLHAS, PORTA_4_FOLHAS];
+      } else {
+        tabelas = [JANELA_2_FOLHAS, JANELA_4_FOLHAS];
+      }
+      let menor = Infinity;
+      tabelas.forEach(tabela => {
+        Object.values(tabela).forEach(valor => {
+          if (valor < menor) menor = valor;
+        });
+      });
+      return menor === Infinity ? 0 : menor;
+    }
+
+    /* =========================================================
+       🖼️ PEGA A FOTO CERTA BASEADO NO Nº DE FOLHAS
+       ========================================================= */
+    function getFotoPorFolhas(product, folhas) {
+      const alvo = folhas === "1" ? "1 FOLHA" : folhas === "2" ? "2 FOLHAS" : "4 FOLHAS";
+      const foto = product.images.find(img => img.folhas === alvo);
+      return foto ? foto.url : product.images[0].url;
+    }
+
+    /* =========================================================
+       💰 CÁLCULO — JANELA BLINDEX
+       ========================================================= */
+    function calcularPrecoJanela(config) {
+      let precoBase = 0;
+      if (config.folhas === "2") {
+        precoBase = JANELA_2_FOLHAS[config.medida] || 0;
+      } else {
+        precoBase = JANELA_4_FOLHAS[config.medida] || 0;
+      }
+      if (config.corVidro === "fume" || config.corVidro === "verde") precoBase += ADICIONAL_FUME_VERDE;
+      if (config.corAluminio === "preto" || config.corAluminio === "bronze") precoBase *= (1 + ADICIONAL_ALUMINIO_ESPECIAL);
+      if (config.pagamento === "cartao") precoBase *= (1 + TAXA_CARTAO);
+      return Math.round(precoBase * 100) / 100;
+    }
+
+    /* =========================================================
+       💰 CÁLCULO — PORTA BLINDEX
+       ========================================================= */
+    function calcularPrecoPorta(config) {
+      let precoBase = 0;
+      if (config.folhas === "1") {
+        precoBase = PORTA_1_FOLHA[config.medida] || 0;
+      } else if (config.folhas === "2") {
+        precoBase = PORTA_2_FOLHAS[config.medida] || 0;
+      } else {
+        precoBase = PORTA_4_FOLHAS[config.medida] || 0;
+      }
+      if (config.corVidro === "fume" || config.corVidro === "verde") precoBase += ADICIONAL_FUME_VERDE;
+      if (config.corAluminio === "preto" || config.corAluminio === "bronze") precoBase *= (1 + ADICIONAL_ALUMINIO_ESPECIAL);
+      if (config.puxador === "sim") precoBase += ADICIONAL_PUXADOR;
+      if (config.folhas === "1" && config.pelicula && config.pelicula !== "nenhuma") precoBase += ADICIONAL_PELICULA;
+      if (config.pagamento === "cartao") precoBase *= (1 + TAXA_CARTAO);
+      return Math.round(precoBase * 100) / 100;
+    }
+
+    function calcularPreco(config) {
+      const unit = currentProduct.tipo === "porta-blindex" ? calcularPrecoPorta(config) : calcularPrecoJanela(config);
+      return unit * (config.quantidade || 1);
+    }
+
+    function calcularPrecoUnitarioAtual(config) {
+      return currentProduct.tipo === "porta-blindex" ? calcularPrecoPorta(config) : calcularPrecoJanela(config);
+    }
+        /* =========================================================
+       🖼️ RENDERIZA OS CARDS
+       ========================================================= */
+    function renderProducts(items) {
+      const grid = document.getElementById("productGrid");
+      grid.innerHTML = "";
+      if(items.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 font-medium">Nenhum produto encontrado.</div>`;
+        return;
+      }
+
+      items.forEach((product) => {
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden flex flex-col justify-between border border-slate-200/80 group";
+
+        const menorPreco = getMenorPreco(product);
+
+        const mediaHTML = `
+          <div class="relative aspect-video bg-slate-100 overflow-hidden">
+            <div id="carousel-${product.id}" class="carousel-track h-full">
+              ${product.images.map((img, i) => `
+                <div class="carousel-slide" onclick="openLightbox(${product.id}, ${i}, event)">
+                  <img src="${img.url}" alt="${product.title}" class="max-w-full max-h-full object-contain p-2">
+                </div>
+              `).join("")}
+            </div>
+            <span id="label-${product.id}" class="font-display absolute top-2 left-2 bg-slate-900/85 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-md uppercase tracking-wider backdrop-blur-sm leading-tight text-center">
+              <span class="block">${product.images[0].folhas}</span>
+              <span class="block text-amber-300">${product.images[0].cor}</span>
+            </span>
+            ${product.badge ? `
+              <span class="font-display absolute top-2 right-2 ${product.badgeBg} text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-md uppercase tracking-wider flex items-center gap-1">
+                <span class="fire-icon text-sm leading-none">🔥</span>
+                <span>${product.badge}</span>
+              </span>
+            ` : ""}
+            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-full">
+              ${product.images.map((_, i) => `<span class="carousel-dot ${i === 0 ? 'active' : ''}" data-index="${i}"></span>`).join("")}
+            </div>
+          </div>
+        `;
+
+        card.innerHTML = `
+          <div>
+            ${mediaHTML}
+            <div class="p-4">
+              <h4 class="font-display font-bold text-slate-900 text-base leading-snug mb-1 group-hover:text-blue-600 transition">${product.title}</h4>
+              <p class="text-slate-500 text-xs leading-relaxed mb-3">${product.description}</p>
+              <div class="text-[11px] text-amber-600 font-bold uppercase tracking-wide">A partir de ${formatarReais(menorPreco)}</div>
+              <div class="text-[11px] text-slate-400 font-medium">Preço varia conforme opções</div>
+            </div>
+          </div>
+          <div class="p-4 pt-0">
+            <button onclick="openConfigModal(${product.id})" class="w-full bg-slate-900 hover:bg-shopee-orange text-white font-bold py-2.5 rounded-lg text-xs uppercase tracking-wide transition flex items-center justify-center gap-1 shadow">
+              <i data-lucide="settings-2" class="w-4 h-4"></i> Configurar
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+
+        initCarousel(product.id, product.images);
+      });
+
+      document.getElementById("productCount").innerText = `${items.length} produto(s)`;
+      lucide.createIcons();
+    }
+
+    /* =========================================================
+       🎠 CARROSSEL
+       ========================================================= */
+    function initCarousel(productId, images) {
+      const track = document.getElementById(`carousel-${productId}`);
+      const label = document.getElementById(`label-${productId}`);
+      if (!track) return;
+      const dots = track.parentElement.querySelectorAll(".carousel-dot");
+
+      track.addEventListener("scroll", () => {
+        const slideWidth = track.clientWidth;
+        const index = Math.round(track.scrollLeft / slideWidth);
+
+        dots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === index);
+        });
+
+        if (images[index] && label) {
+          label.innerHTML = `
+            <span class="block">${images[index].folhas}</span>
+            <span class="block text-amber-300">${images[index].cor}</span>
+          `;
+        }
+      });
+    }
+
+    /* =========================================================
+       🔍 LIGHTBOX
+       ========================================================= */
+    function openLightbox(productId, startIndex, event) {
+      if (event) event.stopPropagation();
+      const product = products.find(p => p.id === productId);
+      if (!product || !product.images) return;
+
+      const track = document.getElementById("lightboxTrack");
+      const dots = document.getElementById("lightboxDots");
+
+      track.innerHTML = product.images.map(img => `
+        <div class="lightbox-slide">
+          <img src="${img.url}" alt="${product.title}">
+        </div>
+      `).join("");
+
+      dots.innerHTML = product.images.map((_, i) => `
+        <span class="carousel-dot ${i === startIndex ? 'active' : ''}" data-index="${i}"></span>
+      `).join("");
+
+      document.getElementById("lightbox").classList.add("active");
+      document.body.style.overflow = "hidden";
+
+      setTimeout(() => { track.scrollLeft = track.clientWidth * startIndex; }, 50);
+
+      track.addEventListener("scroll", () => {
+        const idx = Math.round(track.scrollLeft / track.clientWidth);
+        dots.querySelectorAll(".carousel-dot").forEach((d, i) => {
+          d.classList.toggle("active", i === idx);
+        });
+      });
+    }
+
+    function closeLightbox(event) {
+      if (event && event.target.tagName === "IMG") return;
+      document.getElementById("lightbox").classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    /* =========================================================
+       ⚙️ CONFIG MODAL
+       ========================================================= */
+    function openConfigModal(id) {
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+      currentProduct = product;
+
+      if (product.tipo === "porta-blindex") {
+        currentConfig = {
+          tipo: "porta-blindex",
+          folhas: "4",
+          medida: "2100x1600",
+          corVidro: "incolor",
+          corAluminio: "branco",
+          pagamento: "dinheiro",
+          puxador: "sim",
+          pelicula: "nenhuma",
+          quantidade: 1
+        };
+      } else {
+        currentConfig = {
+          tipo: "janela-blindex",
+          folhas: "4",
+          medida: "1000x1000",
+          corVidro: "incolor",
+          corAluminio: "branco",
+          pagamento: "dinheiro",
+          quantidade: 1
+        };
+      }
+      renderConfigModal();
+      document.getElementById("configModal").classList.remove("hidden");
+      lucide.createIcons();
+    }
+
+    function closeConfigModal() {
+      document.getElementById("configModal").classList.add("hidden");
+      currentProduct = null;
+    }
+        /* =========================================================
+       🪟 MODAL — JANELA BLINDEX
+       ========================================================= */
+    function renderConfigJanela(content, p) {
+      content.innerHTML = `
+        <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl">
+          <img src="${getFotoPorFolhas(p, currentConfig.folhas)}" class="w-16 h-16 rounded-lg object-cover">
+          <div>
+            <h4 class="font-display font-bold text-slate-900 text-sm leading-tight">${p.title}</h4>
+            <p class="text-xs text-slate-500">Vidro temperado sob medida</p>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Número de Folhas</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setConfig('folhas','4')" 
+              class="py-3 rounded-lg border-2 font-bold text-sm transition ${currentConfig.folhas === '4' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              4 Folhas
+            </button>
+            <button onclick="setConfig('folhas','2')" 
+              class="py-3 rounded-lg border-2 font-bold text-sm transition ${currentConfig.folhas === '2' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              2 Folhas
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Medida</label>
+          <div class="grid grid-cols-2 gap-2">
+            ${Object.keys(currentConfig.folhas === "2" ? JANELA_2_FOLHAS : JANELA_4_FOLHAS).map(k => `
+              <button onclick="setConfig('medida','${k}')" 
+                class="py-3 px-2 rounded-lg border-2 font-bold text-[11px] transition ${currentConfig.medida === k ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+                ${MEDIDAS_LABEL[k]}
+              </button>
+            `).join("")}
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Cor do Vidro</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="setConfig('corVidro','incolor')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corVidro === 'incolor' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Incolor
+            </button>
+            <button onclick="setConfig('corVidro','verde')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corVidro === 'verde' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Verde
+            </button>
+            <button onclick="setConfig('corVidro','fume')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corVidro === 'fume' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Fumê
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Cor do Alumínio</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setConfig('corAluminio','branco')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corAluminio === 'branco' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Branco
+            </button>
+            <button onclick="setConfig('corAluminio','brilho')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corAluminio === 'brilho' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Brilho
+            </button>
+            <button onclick="setConfig('corAluminio','preto')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corAluminio === 'preto' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Preto
+            </button>
+            <button onclick="setConfig('corAluminio','bronze')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corAluminio === 'bronze' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Bronze
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Forma de Pagamento</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setConfig('pagamento','dinheiro')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.pagamento === 'dinheiro' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              💵 Dinheiro/Pix
+            </button>
+            <button onclick="setConfig('pagamento','cartao')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.pagamento === 'cartao' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              💳 Cartão
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Quantidade</label>
+          <div class="flex items-center justify-center gap-4 bg-slate-50 rounded-xl p-3">
+            <button onclick="setConfig('quantidade', Math.max(1, (currentConfig.quantidade || 1) - 1))" 
+              class="bg-white border-2 border-slate-200 hover:border-slate-400 text-slate-700 font-bold rounded-lg w-12 h-12 flex items-center justify-center text-xl transition">
+              −
+            </button>
+            <span class="font-display font-extrabold text-2xl text-slate-900 w-12 text-center">${currentConfig.quantidade || 1}</span>
+            <button onclick="setConfig('quantidade', (currentConfig.quantidade || 1) + 1)" 
+              class="bg-white border-2 border-slate-200 hover:border-slate-400 text-slate-700 font-bold rounded-lg w-12 h-12 flex items-center justify-center text-xl transition">
+              +
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       🚪 MODAL — PORTA BLINDEX
+       ========================================================= */
+    function renderConfigPorta(content, p) {
+      content.innerHTML = `
+        <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl">
+          <img src="${getFotoPorFolhas(p, currentConfig.folhas)}" class="w-16 h-16 rounded-lg object-cover">
+          <div>
+            <h4 class="font-display font-bold text-slate-900 text-sm leading-tight">${p.title}</h4>
+            <p class="text-xs text-slate-500">Porta de correr em vidro temperado</p>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Número de Folhas</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="setConfig('folhas','1')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.folhas === '1' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              1 Folha
+            </button>
+            <button onclick="setConfig('folhas','2')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.folhas === '2' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              2 Folhas
+            </button>
+            <button onclick="setConfig('folhas','4')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.folhas === '4' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              4 Folhas
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Medida</label>
+          <div class="grid grid-cols-2 gap-2">
+            ${Object.keys(
+              currentConfig.folhas === "1" ? PORTA_1_FOLHA :
+              currentConfig.folhas === "2" ? PORTA_2_FOLHAS : PORTA_4_FOLHAS
+            ).map(k => `
+              <button onclick="setConfig('medida','${k}')" 
+                class="py-3 px-2 rounded-lg border-2 font-bold text-[11px] transition ${currentConfig.medida === k ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+                ${MEDIDAS_LABEL[k]}
+              </button>
+            `).join("")}
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Cor do Vidro</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="setConfig('corVidro','incolor')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corVidro === 'incolor' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Incolor
+            </button>
+            <button onclick="setConfig('corVidro','verde')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corVidro === 'verde' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Verde
+            </button>
+            <button onclick="setConfig('corVidro','fume')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corVidro === 'fume' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Fumê
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Cor do Alumínio</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setConfig('corAluminio','branco')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corAluminio === 'branco' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Branco
+            </button>
+            <button onclick="setConfig('corAluminio','brilho')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corAluminio === 'brilho' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Brilho
+            </button>
+            <button onclick="setConfig('corAluminio','preto')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corAluminio === 'preto' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Preto
+            </button>
+            <button onclick="setConfig('corAluminio','bronze')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.corAluminio === 'bronze' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Bronze
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Puxador</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setConfig('puxador','sim')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.puxador === 'sim' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              ✓ Sim
+            </button>
+            <button onclick="setConfig('puxador','nao')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.puxador === 'nao' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              Não
+            </button>
+          </div>
+        </div>
+
+        ${currentConfig.folhas === "1" ? `
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p class="text-xs text-blue-800 leading-relaxed">💡 <strong>Dica:</strong> se for para banheiro ou quarto, recomendamos o uso de película.</p>
+          </div>
+          <div>
+            <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Película</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setConfig('pelicula','nenhuma')" 
+                class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.pelicula === 'nenhuma' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+                Nenhuma
+              </button>
+              <button onclick="setConfig('pelicula','branca')" 
+                class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.pelicula === 'branca' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+                Branca
+              </button>
+              <button onclick="setConfig('pelicula','preta')" 
+                class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.pelicula === 'preta' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+                Preta
+              </button>
+              <button onclick="setConfig('pelicula','fosca')" 
+                class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.pelicula === 'fosca' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+                Fosca
+              </button>
+            </div>
+          </div>
+        ` : ""}
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Forma de Pagamento</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setConfig('pagamento','dinheiro')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.pagamento === 'dinheiro' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              💵 Dinheiro/Pix
+            </button>
+            <button onclick="setConfig('pagamento','cartao')" 
+              class="py-3 rounded-lg border-2 font-bold text-xs transition ${currentConfig.pagamento === 'cartao' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'}">
+              💳 Cartão
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-display block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Quantidade</label>
+          <div class="flex items-center justify-center gap-4 bg-slate-50 rounded-xl p-3">
+            <button onclick="setConfig('quantidade', Math.max(1, (currentConfig.quantidade || 1) - 1))" 
+              class="bg-white border-2 border-slate-200 hover:border-slate-400 text-slate-700 font-bold rounded-lg w-12 h-12 flex items-center justify-center text-xl transition">
+              −
+            </button>
+            <span class="font-display font-extrabold text-2xl text-slate-900 w-12 text-center">${currentConfig.quantidade || 1}</span>
+            <button onclick="setConfig('quantidade', (currentConfig.quantidade || 1) + 1)" 
+              class="bg-white border-2 border-slate-200 hover:border-slate-400 text-slate-700 font-bold rounded-lg w-12 h-12 flex items-center justify-center text-xl transition">
+              +
+            </button>
+          </div>
+        </div>
+      `;
+    }
+        /* =========================================================
+       ⚡ SET CONFIG
+       ========================================================= */
+    function setConfig(key, value) {
+      if (key === "quantidade") {
+        currentConfig.quantidade = value;
+        renderConfigModal();
+        return;
+      }
+
+      if (key === "folhas") {
+        currentConfig.folhas = value;
+        if (currentProduct.tipo === "porta-blindex") {
+          const tabela = value === "1" ? PORTA_1_FOLHA : value === "2" ? PORTA_2_FOLHAS : PORTA_4_FOLHAS;
+          currentConfig.medida = Object.keys(tabela)[0];
+          if (value !== "1") currentConfig.pelicula = "nenhuma";
+        } else {
+          const tabela = value === "2" ? JANELA_2_FOLHAS : JANELA_4_FOLHAS;
+          currentConfig.medida = Object.keys(tabela)[0];
+        }
+        renderConfigModal();
+        return;
+      }
+
+      currentConfig[key] = value;
+      renderConfigModal();
+    }
+
+    function updateConfigPrice() {
+      const total = calcularPreco(currentConfig);
+      document.getElementById("configPrice").innerText = formatarReais(total);
+    }
+
+    function renderConfigModal() {
+      const content = document.getElementById("configContent");
+      if (currentProduct.tipo === "porta-blindex") {
+        renderConfigPorta(content, currentProduct);
+      } else {
+        renderConfigJanela(content, currentProduct);
+      }
+      updateConfigPrice();
+    }
+
+    /* =========================================================
+       🛒 ADICIONAR AO CARRINHO
+       ========================================================= */
+    function addConfigToCart() {
+      if (!currentProduct) return;
+
+      const precoUnitario = calcularPrecoUnitarioAtual(currentConfig);
+      const quantidade = currentConfig.quantidade || 1;
+
+      const medidaLabel = MEDIDAS_LABEL[currentConfig.medida];
+      const corVidroLabel = {incolor:"Incolor", verde:"Verde", fume:"Fumê"}[currentConfig.corVidro];
+      const corAlumLabel = {branco:"Branco", brilho:"Brilho", preto:"Preto", bronze:"Bronze"}[currentConfig.corAluminio];
+      const pagamentoLabel = {dinheiro:"Dinheiro/Pix", cartao:"Cartão"}[currentConfig.pagamento];
+
+      const opcoes = {
+        folhas: currentConfig.folhas,
+        medida: medidaLabel,
+        corVidro: corVidroLabel,
+        corAluminio: corAlumLabel,
+        pagamento: pagamentoLabel
+      };
+
+      if (currentProduct.tipo === "porta-blindex") {
+        opcoes.puxador = currentConfig.puxador === "sim" ? "Sim" : "Não";
+        if (currentConfig.folhas === "1") {
+          const peliculaLabel = {nenhuma:"Nenhuma", branca:"Branca", preta:"Preta", fosca:"Fosca"}[currentConfig.pelicula];
+          opcoes.pelicula = peliculaLabel;
+        }
+      }
+
+      cart.push({
+        id: currentProduct.id,
+        title: currentProduct.title,
+        image: currentProduct.images[0].url,
+        preco: precoUnitario,
+        qty: quantidade,
+        opcoes: opcoes
+      });
+      updateCart();
+      closeConfigModal();
+      alert("Produto adicionado ao pedido!");
+    }
+
+    function updateCart() {
+      const count = cart.reduce((acc, item) => acc + item.qty, 0);
+      const total = cart.reduce((acc, item) => acc + (item.preco * item.qty), 0);
+      document.getElementById("cartCount").innerText = count;
+      document.getElementById("cartTotal").innerText = formatarReais(total);
+
+      const cartItemsContainer = document.getElementById("cartItems");
+      cartItemsContainer.innerHTML = "";
+      if(cart.length === 0) {
+        cartItemsContainer.innerHTML = `<p class="text-center text-slate-400 py-8 text-sm">Seu pedido está vazio.</p>`;
+        return;
+      }
+      cart.forEach((item, idx) => {
+        const div = document.createElement("div");
+        div.className = "border-b pb-3 text-sm";
+        let opcoesHTML = "";
+        if (item.opcoes) {
+          opcoesHTML = `<div class="text-[11px] text-slate-500 mt-1 space-y-0.5">`;
+          if (item.opcoes.folhas) opcoesHTML += `<div>🚪 ${item.opcoes.folhas} folhas</div>`;
+          if (item.opcoes.medida) opcoesHTML += `<div>📐 ${item.opcoes.medida}</div>`;
+          if (item.opcoes.corVidro) opcoesHTML += `<div>🎨 Vidro ${item.opcoes.corVidro}</div>`;
+          if (item.opcoes.corAluminio) opcoesHTML += `<div>🪟 Alumínio ${item.opcoes.corAluminio}</div>`;
+          if (item.opcoes.puxador) opcoesHTML += `<div>🔧 Puxador: ${item.opcoes.puxador}</div>`;
+          if (item.opcoes.pelicula) opcoesHTML += `<div>🪟 Película: ${item.opcoes.pelicula}</div>`;
+          if (item.opcoes.pagamento) opcoesHTML += `<div>💳 ${item.opcoes.pagamento}</div>`;
+          opcoesHTML += `</div>`;
+        }
+        div.innerHTML = `
+          <div class="flex justify-between items-start gap-2">
+            <div class="flex-1">
+              <p class="font-semibold text-slate-800 leading-snug">${item.title}</p>
+              ${opcoesHTML}
+              <p class="text-slate-600 text-xs mt-1 font-medium">${formatarReais(item.preco)} cada</p>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="changeQty(${idx}, -1)" class="bg-slate-200 px-2 py-0.5 rounded-md text-slate-700 font-bold hover:bg-slate-300 text-xs">-</button>
+              <span class="font-bold text-xs">${item.qty}</span>
+              <button onclick="changeQty(${idx}, 1)" class="bg-slate-200 px-2 py-0.5 rounded-md text-slate-700 font-bold hover:bg-slate-300 text-xs">+</button>
+            </div>
+          </div>
+        `;
+        cartItemsContainer.appendChild(div);
+      });
+    }
+
+    function changeQty(idx, delta) {
+      if (!cart[idx]) return;
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) cart.splice(idx, 1);
+      updateCart();
+    }
+
+    function toggleCartModal() {
+      document.getElementById("cartModal").classList.toggle("hidden");
+    }
+
+    function filterCategory(cat) {
+      if (cat === "todos") renderProducts(products);
+      else renderProducts(products.filter(p => p.category === cat));
+    }
+
+    function handleSearch() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      renderProducts(products.filter(p => p.title.toLowerCase().includes(query)));
+    }
+
+    function handleSearchMobile() {
+      const query = document.getElementById("searchInputMobile").value.toLowerCase();
+      renderProducts(products.filter(p => p.title.toLowerCase().includes(query)));
+    }
+
+    /* =========================================================
+       📱 WHATSAPP
+       ========================================================= */
+    function checkoutWhatsApp() {
+      if (cart.length === 0) return alert("Seu pedido está vazio!");
+
+      let message = "🛒 *NOVO PEDIDO — AZEVEDO VIDROS*\n";
+      message += "━━━━━━━━━━━━━━━━━━━━\n\n";
+
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        const subtotal = item.preco * item.qty;
+        total += subtotal;
+
+        message += `📦 *ITEM ${index + 1}* — ${item.title}\n`;
+        if (item.opcoes) {
+          if (item.opcoes.folhas) message += `🚪 Folhas: ${item.opcoes.folhas}\n`;
+          if (item.opcoes.medida) message += `📐 Medida: ${item.opcoes.medida}\n`;
+          if (item.opcoes.corVidro) message += `🎨 Vidro: ${item.opcoes.corVidro}\n`;
+          if (item.opcoes.corAluminio) message += `🪟 Alumínio: ${item.opcoes.corAluminio}\n`;
+          if (item.opcoes.puxador) message += `🔧 Puxador: ${item.opcoes.puxador}\n`;
+          if (item.opcoes.pelicula) message += `🪟 Película: ${item.opcoes.pelicula}\n`;
+          if (item.opcoes.pagamento) message += `💳 Pagamento: ${item.opcoes.pagamento}\n`;
+        }
+        message += `🔢 Quantidade: ${item.qty}\n`;
+        message += `💰 Valor unitário: ${formatarReais(item.preco)}\n`;
+        message += `💰 Subtotal: ${formatarReais(subtotal)}\n\n`;
+        message += "━━━━━━━━━━━━━━━━━━━━\n\n";
+      });
+
+      message += `💵 *TOTAL GERAL: ${formatarReais(total)}*\n\n`;
+      message += "📍 Por favor, confirmem a disponibilidade para medição no local.";
+
+      const encoded = encodeURIComponent(message);
+      window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encoded}`, "_blank");
+    }
+  </script>
+</body>
+</html>
