@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azevedo Vidros e Esquadrias - Japeri RJ</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{overflow-x:hidden;max-width:100vw;-webkit-overflow-scrolling:touch;}
+:root{--azul-escuro:#0d2b4e;--azul-medio:#1a4d8f;--azul-preco:#1565c0;--amarelo:#f5b400;--laranja:#ff6b00;--laranja-claro:#fff3e6;--verde-wpp:#25D366;--cinza-bg:#f4f5f7;--cinza-borda:#e4e7ec;--texto:#1a2332;--texto-suave:#6b7280;--sombra:0 2px 12px rgba(15,40,80,.08);}
+body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--cinza-bg);color:var(--texto);padding-bottom:110px;line-height:1.4;}
+.header{background:linear-gradient(135deg,#0d2b4e 0%,#123a63 100%);padding:14px 16px 16px;position:sticky;top:0;z-index:100;}
+.header-topo{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
+.logo-box{width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#ffc93c,#f5a623);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(245,180,0,.4);}
+.logo-box svg{width:26px;height:26px;fill:#0d2b4e;}
+.header-texto{flex:1;color:#fff;line-height:1.15;}
+.header-texto h1{font-size:19px;font-weight:900;letter-spacing:-.3px;}
+.header-texto p{font-size:11px;font-weight:700;color:#ffd54f;letter-spacing:1.5px;margin-top:2px;}
+.carrinho-topo{background:linear-gradient(135deg,#ffc93c,#f5a623);color:#0d2b4e;border:none;border-radius:12px;padding:9px 12px;font-size:20px;font-weight:900;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 2px 10px rgba(245,180,0,.5);}
+.carrinho-topo .badge-topo{background:#e53935;color:#fff;border-radius:20px;font-size:11px;font-weight:900;padding:1px 7px;min-width:20px;text-align:center;}
+.busca-wrap{position:relative;}
+.busca-wrap input{width:100%;padding:13px 45px 13px 18px;border:none;border-radius:12px;font-size:14px;outline:none;background:#fff;color:var(--texto);box-shadow:var(--sombra);}
+.busca-wrap input::placeholder{color:#9aa4b2;}
+.busca-wrap .icon-lupa{position:absolute;right:15px;top:50%;transform:translateY(-50%);font-size:17px;pointer-events:none;color:var(--laranja);}
+.filtros-bar{background:linear-gradient(180deg,#123a63,#0d2b4e);padding:0 16px 14px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;}
+.filtros-bar::-webkit-scrollbar{display:none;}
+.filtro{padding:9px 20px;border-radius:22px;background:transparent;border:1.5px solid rgba(255,255,255,.25);font-size:13px;font-weight:700;color:#cbd5e1;white-space:nowrap;cursor:pointer;}
+.filtro.ativo{background:linear-gradient(135deg,#ffc93c,#f5a623);color:#0d2b4e;border-color:transparent;box-shadow:0 2px 8px rgba(245,180,0,.4);}
+.hero-wrap{padding:18px 16px 6px;}
+.hero{background:#fff;border-radius:18px;padding:26px 20px 24px;text-align:center;border:2px solid var(--laranja-claro);box-shadow:var(--sombra);}
+.hero-tag{display:inline-block;background:var(--laranja-claro);color:var(--laranja);font-size:10px;font-weight:900;letter-spacing:1.8px;padding:6px 14px;border-radius:20px;margin-bottom:14px;}
+.hero h2{font-size:26px;font-weight:900;color:var(--azul-escuro);line-height:1.15;letter-spacing:-.5px;margin-bottom:12px;}
+.hero p{font-size:13.5px;color:var(--texto-suave);line-height:1.6;margin-bottom:20px;padding:0 6px;}
+.btn-wpp-hero{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--verde-wpp);color:#fff;border:none;border-radius:30px;padding:13px 28px;font-size:15px;font-weight:800;cursor:pointer;text-decoration:none;box-shadow:0 4px 14px rgba(37,211,102,.35);}
+.btn-wpp-hero svg{width:20px;height:20px;fill:#fff;}
+.secao-topo{display:flex;align-items:center;justify-content:space-between;padding:22px 16px 12px;}
+.secao-titulo{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:900;color:var(--azul-escuro);}
+.secao-titulo .estrela{font-size:20px;color:var(--laranja);}
+.contador{background:#e8f1fb;color:var(--azul-medio);font-size:12px;font-weight:800;padding:6px 12px;border-radius:20px;}
+.produtos{display:grid;grid-template-columns:1fr;gap:16px;padding:0 16px 24px;}
+@media(min-width:640px){.produtos{grid-template-columns:1fr 1fr;}}
+.card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--sombra);position:relative;}
+.card-topo{position:relative;overflow:hidden;}
+.etiqueta-info{position:absolute;top:12px;left:12px;background:rgba(13,43,78,.9);color:#fff;font-size:10.5px;font-weight:800;padding:6px 12px;border-radius:20px;letter-spacing:.6px;z-index:5;text-transform:uppercase;}
+.etiqueta-destaque{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,#ff9800,#ff6b00);color:#fff;font-size:10.5px;font-weight:900;padding:6px 12px;border-radius:20px;letter-spacing:.6px;z-index:5;display:flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(255,107,0,.4);}
+.etiqueta-destaque .fogo{display:inline-block;animation:fogo .8s infinite alternate;}
+@keyframes fogo{from{transform:scale(1) rotate(-3deg);}to{transform:scale(1.25) rotate(3deg);}}
+.carrossel{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;width:100%;}
+.carrossel::-webkit-scrollbar{display:none;}
+.carrossel img{width:100%;min-width:100%;flex:0 0 100%;height:280px;object-fit:contain;scroll-snap-align:start;cursor:pointer;background:#eef1f4;display:block;padding:6px 0;}
+.carrossel-indicador{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;z-index:5;}
+.card-info{padding:14px 16px 16px;}
+.card-info h3{font-size:16px;font-weight:800;color:var(--azul-escuro);margin-bottom:8px;}
+.card-info .a-partir{font-size:11.5px;color:var(--texto-suave);font-weight:600;margin-bottom:2px;}
+.card-info .preco{font-size:24px;font-weight:900;color:var(--azul-preco);margin-bottom:14px;}
+.btn-config{width:100%;padding:13px;background:linear-gradient(135deg,#ff9800,#ff6b00);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(255,107,0,.25);}
+.carrinho-flutuante{position:fixed;bottom:18px;right:18px;background:var(--verde-wpp);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-size:16px;font-weight:800;box-shadow:0 6px 20px rgba(37,211,102,.45);cursor:pointer;z-index:200;display:flex;align-items:center;gap:8px;}
+.carrinho-flutuante .badge-flut{background:#fff;color:var(--verde-wpp);border-radius:20px;padding:2px 9px;font-size:13px;font-weight:900;min-width:24px;text-align:center;}
+.modal-fundo{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:none;align-items:flex-end;justify-content:center;}
+.modal-fundo.aberto{display:flex;}
+@media(min-width:640px){.modal-fundo{align-items:center;}}
+.modal{background:#fff;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;border-radius:22px 22px 0 0;animation:subir .3s ease;}
+@media(min-width:640px){.modal{border-radius:20px;}}
+@keyframes subir{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-topo{position:sticky;top:0;background:#fff;padding:16px 20px;border-bottom:1px solid var(--cinza-borda);display:flex;justify-content:space-between;align-items:center;z-index:2;}
+.modal-topo h2{font-size:17px;font-weight:900;color:var(--azul-escuro);}
+.btn-fechar{background:var(--cinza-bg);border:none;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;color:#666;}
+.modal-corpo{padding:18px 20px 26px;}
+.preview-foto{width:100%;height:220px;object-fit:contain;background:#eef1f4;border-radius:12px;margin-bottom:18px;display:block;padding:8px;transition:opacity .2s;}
+.grupo{margin-bottom:22px;}
+.grupo label{display:block;font-size:13px;font-weight:800;margin-bottom:10px;color:var(--azul-escuro);text-transform:uppercase;letter-spacing:.5px;}
+.amostra-pelicula{width:100%;max-width:240px;height:200px;object-fit:contain;border-radius:10px;border:2px solid var(--cinza-borda);margin-top:12px;display:block;background:#eef1f4;padding:6px;cursor:pointer;transition:transform .15s;}
+.amostra-pelicula:active{transform:scale(.97);}
+.amostra-label{font-size:11px;color:var(--texto-suave);font-weight:700;margin-top:6px;text-transform:uppercase;letter-spacing:.5px;}
+.opcoes{display:flex;flex-wrap:wrap;gap:8px;}
+.opcao{padding:10px 16px;border:2px solid var(--cinza-borda);border-radius:10px;background:#fff;font-size:13.5px;font-weight:700;cursor:pointer;color:var(--texto);}
+.opcao.ativa{border-color:var(--azul-medio);background:#e8f1fb;color:var(--azul-medio);}
+.qty-control{display:flex;align-items:center;gap:14px;background:#fff;border:2px solid var(--cinza-borda);border-radius:10px;padding:6px 14px;width:fit-content;}
+.qty-control button{width:36px;height:36px;border-radius:50%;border:none;background:#e8f1fb;color:var(--azul-medio);font-size:22px;font-weight:900;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;}
+.qty-control button:active{transform:scale(.92);}
+.qty-control #qtyValor{font-size:20px;font-weight:900;min-width:36px;text-align:center;color:var(--azul-escuro);}
+.resumo{background:var(--cinza-bg);border-radius:12px;padding:14px;margin-bottom:16px;}
+.resumo-linha{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:6px;color:var(--texto-suave);}
+.resumo-linha.total{font-size:19px;font-weight:900;color:var(--azul-preco);margin-top:10px;padding-top:10px;border-top:2px dashed #cbd5e1;margin-bottom:0;}
+.btn-add{width:100%;padding:15px;background:var(--verde-wpp);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;}
+.item-carrinho{background:var(--cinza-bg);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.item-carrinho .info{flex:1;}
+.item-carrinho h4{font-size:14px;font-weight:800;margin-bottom:4px;color:var(--azul-escuro);}
+.item-carrinho p{font-size:12px;color:var(--texto-suave);line-height:1.5;}
+.item-carrinho .qtd-carrinho{display:inline-block;background:var(--azul-medio);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:20px;margin-top:6px;}
+.item-carrinho .valor{font-size:15px;font-weight:900;color:var(--azul-preco);white-space:nowrap;}
+.btn-remover{background:none;border:none;color:#e53935;font-size:17px;cursor:pointer;padding:4px;}
+.vazio{text-align:center;padding:36px 20px;color:#9aa4b2;font-size:14px;}
+.btn-wpp-enviar{width:100%;padding:15px;background:var(--verde-wpp);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;margin-top:10px;}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:900;display:none;align-items:center;justify-content:center;}
+.lightbox.aberto{display:flex;}
+.lightbox-carrossel{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;width:100%;height:100%;align-items:center;}
+.lightbox-carrossel::-webkit-scrollbar{display:none;}
+.lightbox-carrossel img{min-width:100%;width:100%;max-height:88vh;object-fit:contain;scroll-snap-align:center;padding:0 10px;}
+.lightbox .fechar-lb{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.2);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;z-index:5;}
+.lightbox-contador{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:800;letter-spacing:.5px;}
+footer{text-align:center;padding:26px 16px;font-size:12px;color:#9aa4b2;}
+footer strong{color:var(--azul-escuro);}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-topo">
+    <div class="logo-box"><svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></svg></div>
+    <div class="header-texto"><h1>Azevedo</h1><p>VIDROS & ESQUADRIAS</p></div>
+    <button class="carrinho-topo" onclick="abrirCarrinho()">🛒 <span class="badge-topo" id="badgeTopo">0</span></button>
+  </div>
+  <div class="busca-wrap">
+    <input type="text" id="campoBusca" placeholder="Buscar produtos..." oninput="buscarProduto()">
+    <span class="icon-lupa">🔍</span>
+  </div>
+</header>
+<div class="filtros-bar" id="filtros">
+  <button class="filtro ativo" data-cat="todos" onclick="filtrar('todos', this)">Todos</button>
+  <button class="filtro" data-cat="bascula" onclick="filtrar('bascula', this)">Básculas</button>
+  <button class="filtro" data-cat="janela" onclick="filtrar('janela', this)">Janelas</button>
+  <button class="filtro" data-cat="porta" onclick="filtrar('porta', this)">Portas</button>
+</div>
+
+<div class="hero-wrap">
+  <div class="hero">
+    <span class="hero-tag">SERRALHERIA & VIDRAÇARIA</span>
+    <h2>Vidros e Esquadrias Sob Medida</h2>
+    <p>Escolha as opções, veja o preço na hora e envie seu pedido direto pelo WhatsApp.</p>
+    <a class="btn-wpp-hero" href="https://wa.me/5521992396653" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      Falar no WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="secao-topo">
+  <h2 class="secao-titulo"><span class="estrela">✨</span> Nossos Produtos</h2>
+  <span class="contador" id="contadorProdutos">0 produto(s)</span>
+</div>
+
+<div class="produtos" id="vitrine"></div>
+
+<footer>
+  <strong>Azevedo Vidros e Esquadrias</strong><br>
+  Japeri - RJ · WhatsApp (21) 99239-6653<br>
+  © 2025 Todos os direitos reservados
+</footer>
+
+<button class="carrinho-flutuante" onclick="abrirCarrinho()">🛒 Carrinho <span class="badge-flut" id="badgeCarrinho">0</span></button>
+
+<div class="modal-fundo" id="modalFundo" onclick="if(event.target===this) fecharModal()">
+  <div class="modal">
+    <div class="modal-topo"><h2 id="modalTitulo">Configurar</h2><button class="btn-fechar" onclick="fecharModal()">✕</button></div>
+    <div class="modal-corpo" id="modalCorpo"></div>
+  </div>
+</div>
+
+<div class="modal-fundo" id="carrinhoFundo" onclick="if(event.target===this) fecharCarrinho()">
+  <div class="modal">
+    <div class="modal-topo"><h2>🛒 Seu Carrinho</h2><button class="btn-fechar" onclick="fecharCarrinho()">✕</button></div>
+    <div class="modal-corpo" id="carrinhoCorpo"></div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="fechar-lb" onclick="fecharLightbox()">✕</button>
+  <div class="lightbox-carrossel" id="lightboxCarrossel"></div>
+  <div class="lightbox-contador" id="lightboxContador">1 / 1</div>
+</div>
+<script>
+/* ============================================================
+   ADICIONAIS
+   ============================================================ */
+const ADICIONAIS = {
+  vidroColorido: 30,
+  puxador: 50,
+  pelicula: 60,
+  taxaCor: 0.05,
+  taxaCartao: 0.07
+};
+
+/* ============================================================
+   PRODUTOS
+   ============================================================ */
+const PRODUTOS = [
+
+  {
+    id: 'janela-blindex',
+    nome: 'Janela Blindex',
+    categoria: 'janela',
+    etiqueta: { texto: 'MAIS VENDIDO', fogo: true },
+    folhas: ['4', '2'],
+    cores: ['branco', 'brilho', 'preto', 'bronze'],
+    coresSemTaxa: ['branco', 'brilho'],
+    vidros: ['incolor', 'fumê', 'verde'],
+    vidrosSemTaxa: ['incolor'],
+    temPuxador: false,
+    puxadorPadrao: null,
+    temFechadura: false,
+    fechaduraPadrao: null,
+    peliculas: null,
+    precosBase: {
+      '2': { '800x800': 370, '1000x1000': 430, '1200x1000': 480, '1500x1200': 600 },
+      '4': {
+        '1000x1000': 450, '1200x1000': 540, '1000x1500': 710,
+        '1500x1200': 730, '1500x1500': 790, '1200x2000': 820
+      }
+    },
+    imagens: {
+      '4_branco': ['janela-blindex.jpg'],
+      '4_brilho': ['janela-blindex2.png'],
+      '4_preto':  ['janela-blindex1.png'],
+      '4_bronze': ['janela-blindex3.png'],
+      '2_branco': ['janela-blindex4.jpg'],
+      '2_brilho': ['janela-blindex6.jpg'],
+      '2_preto':  ['janela-blindex5.jpg'],
+      '2_bronze': ['janela-blindex7.jpg']
+    }
+  },
+
+  {
+    id: 'porta-blindex',
+    nome: 'Porta Blindex de Correr',
+    categoria: 'porta',
+    etiqueta: null,
+    folhas: ['4', '2', '1'],
+    cores: ['branco', 'brilho', 'preto', 'bronze'],
+    coresSemTaxa: ['branco', 'brilho'],
+    vidros: ['incolor', 'fumê', 'verde'],
+    vidrosSemTaxa: ['incolor'],
+    temPuxador: true,
+    puxadorPadrao: 'sim',
+    temFechadura: false,
+    fechaduraPadrao: null,
+    peliculas: ['nenhuma', 'preta', 'branca', 'fosca'],
+    peliculaSoFolha: '1',
+    precosBase: {
+      '1': { '2100x800': 100, '2100x900': 100, '2100x1000': 100 },
+      '2': { '2100x1600': 100, '2100x2000': 100, '2100x2500': 100, '2100x3000': 100 },
+      '4': { '2100x1600': 100, '2100x2000': 100, '2100x2500': 100, '2100x3000': 100 }
+    },
+    imagens: {
+      '4_branco': ['porta-blindex1.jpeg'],
+      '4_brilho': ['porta-blindex3.jpeg'],
+      '4_preto':  ['porta-blindex2.jpg'],
+      '4_bronze': ['porta-blindex4.jpg'],
+      '2_branco': ['IIporta-blindex1.jpeg'],
+      '2_brilho': ['IIporta-blindex3.jpg'],
+      '2_preto':  ['IIporta-blindex2.jpeg'],
+      '2_bronze': ['IIporta-blindex4.jpg'],
+      '1_branco': ['Iporta-blindex1.jpeg'],
+      '1_brilho': ['Iporta-blindex3.jpg'],
+      '1_preto':  ['Iporta-blindex2.jpeg'],
+      '1_bronze': ['Iporta-blindex4.jpg']
+    }
+  },
+
+  {
+    id: 'bascula-blindex',
+    nome: 'Báscula de Blindex',
+    categoria: 'bascula',
+    etiqueta: null,
+    folhas: null,
+    cores: ['branco', 'brilho', 'preto', 'bronze'],
+    coresSemTaxa: ['branco', 'brilho'],
+    vidros: ['incolor', 'fumê', 'verde'],
+    vidrosSemTaxa: ['incolor'],
+    temPuxador: false,
+    puxadorPadrao: null,
+    temFechadura: false,
+    fechaduraPadrao: null,
+    peliculas: ['nenhuma', 'preta', 'branca', 'fosca'],
+    precosBase: {
+      '500x500': 100,
+      '600x600': 100,
+      '700x700': 100,
+      '800x800': 100
+    },
+    imagens: {
+      'branco': ['bascula-blindex1.jpg'],
+      'brilho': ['bascula-blindex3.jpeg'],
+      'preto':  ['bascula-blindex2.jpg'],
+      'bronze': ['bascula-blindex4.png']
+    }
+  },
+
+  {
+    id: 'porta-pivotante',
+    nome: 'Porta Pivotante',
+    categoria: 'porta',
+    etiqueta: null,
+    folhas: null,
+    cores: ['branco', 'brilho', 'preto', 'bronze'],
+    coresSemTaxa: ['branco', 'brilho'],
+    vidros: ['incolor', 'fumê', 'verde'],
+    vidrosSemTaxa: ['incolor'],
+    temPuxador: true,
+    puxadorPadrao: 'sim',
+    temFechadura: true,
+    fechaduraPadrao: 'nao',
+    peliculas: ['nenhuma', 'preta', 'branca', 'fosca'],
+    precosBase: {
+      '600x2100': 100,
+      '700x2100': 100,
+      '800x2100': 100,
+      '900x2100': 100,
+      '1000x2100': 100
+    },
+    imagens: {
+      'branco': ['pv-branca.png'],
+      'preto':  ['pv-preta.png'],
+      'brilho': ['pv-brilho.png'],
+      'bronze': ['pv-bronze.png']
+    }
+  }
+
+];
+/* ============================================================
+   MENOR PREÇO
+   ============================================================ */
+function getMenorPreco(produto) {
+  let menor = Infinity;
+  const base = produto.precosBase;
+  if (produto.folhas) {
+    for (const f in base) for (const m in base[f]) if (base[f][m] < menor) menor = base[f][m];
+  } else {
+    for (const m in base) if (base[m] < menor) menor = base[m];
+  }
+  return menor === Infinity ? 0 : menor;
+}
+
+/* ============================================================
+   TODAS AS FOTOS
+   ============================================================ */
+function getTodasFotos(produto) {
+  const todas = [];
+  for (const chave in produto.imagens) {
+    produto.imagens[chave].forEach(src => {
+      let folha = null, cor = null;
+      if (produto.folhas) {
+        const partes = chave.split('_');
+        folha = partes[0];
+        cor = partes[1];
+      } else {
+        cor = chave;
+      }
+      todas.push({ src, folha, cor });
+    });
+  }
+  return todas;
+}
+
+/* ============================================================
+   MONTAR ETIQUETA
+   ============================================================ */
+function montarEtiqueta(folha, cor) {
+  if (!folha) return cor.toUpperCase();
+  const textoFolha = folha === '1' ? '1 FOLHA' : folha + ' FOLHAS';
+  return textoFolha + ' / ' + cor.toUpperCase();
+}
+
+/* ============================================================
+   NOME BONITO DA PELÍCULA
+   ============================================================ */
+function nomePelicula(p) {
+  if (!p || p === 'nenhuma') return 'Nenhuma';
+  return p.charAt(0).toUpperCase() + p.slice(1);
+}
+
+/* ============================================================
+   FOTO DE PREVIEW DO MODAL
+   ============================================================ */
+function getFotoPreview(prod, folha, cor) {
+  let chave;
+  if (prod.folhas) {
+    chave = folha + '_' + cor;
+  } else {
+    chave = cor;
+  }
+  const arr = prod.imagens[chave];
+  return arr && arr.length ? arr[0] : '';
+}
+
+/* ============================================================
+   ESTADO GLOBAL
+   ============================================================ */
+let carrinho = [];
+let configAtual = null;
+let lightboxFotos = [];
+let lightboxIndex = 0;
+
+/* ============================================================
+   RENDERIZAR VITRINE
+   ============================================================ */
+function renderizarVitrine(lista) {
+  const vitrine = document.getElementById('vitrine');
+  const contador = document.getElementById('contadorProdutos');
+  vitrine.innerHTML = '';
+  if (contador) contador.textContent = lista.length + ' produto(s)';
+
+  if (lista.length === 0) {
+    vitrine.innerHTML = '<div class="vazio">Nenhum produto encontrado 😕</div>';
+    return;
+  }
+
+  lista.forEach(prod => {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const fotos = getTodasFotos(prod);
+
+    let tagInicial = '';
+    if (fotos[0]) tagInicial = montarEtiqueta(fotos[0].folha, fotos[0].cor);
+
+    let etiquetaDestaqueHTML = '';
+    if (prod.etiqueta) {
+      etiquetaDestaqueHTML = `
+        <div class="etiqueta-destaque">
+          ${prod.etiqueta.fogo ? '<span class="fogo">🔥</span>' : ''}
+          ${prod.etiqueta.texto}
+        </div>`;
+    }
+
+    const imagensHTML = fotos.map((foto, i) =>
+      `<img src="${foto.src}" alt="${prod.nome}" onclick="abrirLightbox('${prod.id}', ${i})" onerror="this.style.opacity='.3'">`
+    ).join('');
+
+    card.innerHTML = `
+      <div class="card-topo">
+        <div class="etiqueta-info" id="tag-${prod.id}">${tagInicial}</div>
+        ${etiquetaDestaqueHTML}
+        <div class="carrossel" id="carrossel-${prod.id}">${imagensHTML}</div>
+        <div class="carrossel-indicador" id="indicador-${prod.id}">1 / ${fotos.length}</div>
+      </div>
+      <div class="card-info">
+        <h3>${prod.nome}</h3>
+        <div class="a-partir">A partir de</div>
+        <div class="preco">R$ ${getMenorPreco(prod).toFixed(2).replace('.', ',')}</div>
+        <button class="btn-config" onclick="abrirConfig('${prod.id}')">Configurar e Orçar</button>
+      </div>
+    `;
+
+    vitrine.appendChild(card);
+
+    setTimeout(() => {
+      const carrossel = document.getElementById('carrossel-' + prod.id);
+      const tag = document.getElementById('tag-' + prod.id);
+      const indicador = document.getElementById('indicador-' + prod.id);
+      if (carrossel && indicador) {
+        carrossel.onscroll = () => {
+          const idx = Math.round(carrossel.scrollLeft / carrossel.clientWidth);
+          const foto = fotos[idx];
+          if (foto && tag) tag.textContent = montarEtiqueta(foto.folha, foto.cor);
+          indicador.textContent = `${idx + 1} / ${fotos.length}`;
+        };
+      }
+    }, 30);
+  });
+}
+
+/* ============================================================
+   BUSCA
+   ============================================================ */
+function buscarProduto() {
+  const termo = document.getElementById('campoBusca').value.toLowerCase().trim();
+  const botaoAtivo = document.querySelector('.filtro.ativo');
+  const categoria = botaoAtivo ? botaoAtivo.getAttribute('data-cat') : 'todos';
+  aplicarFiltroEBusca(categoria, termo);
+}
+
+/* ============================================================
+   FILTRO
+   ============================================================ */
+function filtrar(categoria, botao) {
+  document.querySelectorAll('.filtro').forEach(b => b.classList.remove('ativo'));
+  botao.classList.add('ativo');
+  const termo = document.getElementById('campoBusca').value.toLowerCase().trim();
+  aplicarFiltroEBusca(categoria, termo);
+}
+
+function aplicarFiltroEBusca(categoria, termo) {
+  let lista = PRODUTOS;
+  if (categoria === 'janela') lista = lista.filter(p => p.categoria === 'janela');
+  else if (categoria === 'porta') lista = lista.filter(p => p.categoria === 'porta');
+  else if (categoria === 'bascula') lista = lista.filter(p => p.categoria === 'bascula');
+  if (termo) lista = lista.filter(p => p.nome.toLowerCase().includes(termo));
+  renderizarVitrine(lista);
+}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+function abrirLightbox(produtoId, indexFoto) {
+  const prod = PRODUTOS.find(p => p.id === produtoId);
+  if (!prod) return;
+
+  lightboxFotos = getTodasFotos(prod);
+  lightboxIndex = indexFoto || 0;
+
+  const carrossel = document.getElementById('lightboxCarrossel');
+  carrossel.innerHTML = lightboxFotos.map(foto =>
+    `<img src="${foto.src}" alt="${prod.nome}" onerror="this.style.opacity='.3'">`
+  ).join('');
+
+  document.getElementById('lightbox').classList.add('aberto');
+
+  setTimeout(() => {
+    carrossel.scrollLeft = lightboxIndex * carrossel.clientWidth;
+    atualizarContadorLightbox();
+  }, 50);
+
+  carrossel.onscroll = () => {
+    const idx = Math.round(carrossel.scrollLeft / carrossel.clientWidth);
+    lightboxIndex = idx;
+    atualizarContadorLightbox();
+  };
+}
+
+function atualizarContadorLightbox() {
+  const cont = document.getElementById('lightboxContador');
+  if (cont) cont.textContent = `${lightboxIndex + 1} / ${lightboxFotos.length}`;
+}
+
+function fecharLightbox() {
+  document.getElementById('lightbox').classList.remove('aberto');
+  document.getElementById('lightboxCarrossel').innerHTML = '';
+  lightboxFotos = [];
+  lightboxIndex = 0;
+}
+
+/* ============================================================
+   LIGHTBOX SIMPLES (uma foto só - usada na amostra)
+   ============================================================ */
+function abrirLightboxSimples(src) {
+  lightboxFotos = [{ src: src }];
+  lightboxIndex = 0;
+
+  const carrossel = document.getElementById('lightboxCarrossel');
+  carrossel.innerHTML = `<img src="${src}" alt="Amostra" onerror="this.style.opacity='.3'">`;
+  carrossel.onscroll = null;
+  carrossel.scrollLeft = 0;
+
+  document.getElementById('lightbox').classList.add('aberto');
+  atualizarContadorLightbox();
+}
+
+/* ============================================================
+   ABRIR CONFIG
+   ============================================================ */
+function abrirConfig(produtoId) {
+  const prod = PRODUTOS.find(p => p.id === produtoId);
+  if (!prod) return;
+
+  const folhaInicial = prod.folhas ? prod.folhas[0] : null;
+  let medidaInicial;
+  if (prod.folhas) {
+    medidaInicial = Object.keys(prod.precosBase[folhaInicial])[0];
+  } else {
+    medidaInicial = Object.keys(prod.precosBase)[0];
+  }
+
+  configAtual = {
+    produtoId: produtoId,
+    folha: folhaInicial,
+    medida: medidaInicial,
+    vidro: prod.vidros[0],
+    cor: prod.cores[0],
+    puxador: prod.temPuxador ? prod.puxadorPadrao : null,
+    fechadura: prod.temFechadura ? prod.fechaduraPadrao : null,
+    pelicula: prod.peliculas ? 'nenhuma' : null,
+    pagamento: 'pix',
+    quantidade: 1
+  };
+
+  document.getElementById('modalTitulo').textContent = prod.nome;
+  montarModal();
+  document.getElementById('modalFundo').classList.add('aberto');
+}
+
+function fecharModal() {
+  document.getElementById('modalFundo').classList.remove('aberto');
+}
+/* ============================================================
+   MONTAR MODAL
+   ============================================================ */
+function montarModal() {
+  const prod = PRODUTOS.find(p => p.id === configAtual.produtoId);
+  const corpo = document.getElementById('modalCorpo');
+  let html = '';
+
+  /* FOTO DE PREVIEW */
+  const fotoPreview = getFotoPreview(prod, configAtual.folha, configAtual.cor);
+  if (fotoPreview) {
+    html += `<img class="preview-foto" src="${fotoPreview}" alt="${prod.nome}" onerror="this.style.opacity='.3'">`;
+  }
+
+  /* FOLHAS */
+  if (prod.folhas) {
+    html += '<div class="grupo"><label>Folhas</label><div class="opcoes">';
+    prod.folhas.forEach(f => {
+      const ativa = configAtual.folha === f ? 'ativa' : '';
+      const texto = f === '1' ? '1 Folha' : f + ' Folhas';
+      html += `<button class="opcao ${ativa}" onclick="setFolha('${f}')">${texto}</button>`;
+    });
+    html += '</div></div>';
+  }
+
+  /* MEDIDA */
+  let medidas;
+  if (prod.folhas) {
+    medidas = Object.keys(prod.precosBase[configAtual.folha]);
+  } else {
+    medidas = Object.keys(prod.precosBase);
+  }
+  html += '<div class="grupo"><label>Medida (largura × altura em mm)</label><div class="opcoes">';
+  medidas.forEach(m => {
+    const ativa = configAtual.medida === m ? 'ativa' : '';
+    html += `<button class="opcao ${ativa}" onclick="setMedida('${m}')">${m.replace('x', ' × ')}</button>`;
+  });
+  html += '</div></div>';
+
+  /* VIDRO */
+  html += '<div class="grupo"><label>Vidro</label><div class="opcoes">';
+  prod.vidros.forEach(v => {
+    const ativa = configAtual.vidro === v ? 'ativa' : '';
+    html += `<button class="opcao ${ativa}" onclick="setVidro('${v}')">${v.charAt(0).toUpperCase() + v.slice(1)}</button>`;
+  });
+  html += '</div></div>';
+
+  /* COR */
+  html += '<div class="grupo"><label>Cor do Alumínio</label><div class="opcoes">';
+  prod.cores.forEach(c => {
+    const ativa = configAtual.cor === c ? 'ativa' : '';
+    html += `<button class="opcao ${ativa}" onclick="setCor('${c}')">${c.charAt(0).toUpperCase() + c.slice(1)}</button>`;
+  });
+  html += '</div></div>';
+
+  /* PUXADOR */
+  if (prod.temPuxador) {
+    html += '<div class="grupo"><label>Puxador</label><div class="opcoes">';
+    html += `<button class="opcao ${configAtual.puxador === 'sim' ? 'ativa' : ''}" onclick="setPuxador('sim')">Sim</button>`;
+    html += `<button class="opcao ${configAtual.puxador === 'nao' ? 'ativa' : ''}" onclick="setPuxador('nao')">Não</button>`;
+    html += '</div></div>';
+  }
+
+  /* FECHADURA COM MAÇANETA (exclusiva com puxador) */
+  if (prod.temFechadura) {
+    html += '<div class="grupo"><label>Fechadura com Maçaneta</label><div class="opcoes">';
+    html += `<button class="opcao ${configAtual.fechadura === 'sim' ? 'ativa' : ''}" onclick="setFechadura('sim')">Sim</button>`;
+    html += `<button class="opcao ${configAtual.fechadura === 'nao' ? 'ativa' : ''}" onclick="setFechadura('nao')">Não</button>`;
+    html += '</div></div>';
+  }
+
+  /* PELÍCULA + AMOSTRA */
+  if (prod.peliculas && (!prod.peliculaSoFolha || configAtual.folha === prod.peliculaSoFolha)) {
+    html += '<div class="grupo"><label>Película</label><div class="opcoes">';
+    prod.peliculas.forEach(p => {
+      const ativa = configAtual.pelicula === p ? 'ativa' : '';
+      html += `<button class="opcao ${ativa}" onclick="setPelicula('${p}')">${nomePelicula(p)}</button>`;
+    });
+    html += '</div>';
+    if (configAtual.pelicula && configAtual.pelicula !== 'nenhuma') {
+      const arquivoPelicula = 'pvp-' + configAtual.pelicula + '.png';
+      html += `<img class="amostra-pelicula" src="${arquivoPelicula}" alt="Amostra película ${configAtual.pelicula}" onclick="abrirLightboxSimples('${arquivoPelicula}')" onerror="this.style.display='none';">`;
+      html += `<div class="amostra-label">Amostra: película ${configAtual.pelicula}</div>`;
+    }
+    html += '</div>';
+  }
+
+  /* PAGAMENTO */
+  html += '<div class="grupo"><label>Forma de Pagamento</label><div class="opcoes">';
+  html += `<button class="opcao ${configAtual.pagamento === 'pix' ? 'ativa' : ''}" onclick="setPagamento('pix')">Pix / Dinheiro</button>`;
+  html += `<button class="opcao ${configAtual.pagamento === 'cartao' ? 'ativa' : ''}" onclick="setPagamento('cartao')">Cartão</button>`;
+  html += '</div></div>';
+
+  /* QUANTIDADE */
+  html += `
+    <div class="grupo">
+      <label>Quantidade</label>
+      <div class="qty-control">
+        <button onclick="mudarQtd(-1)">−</button>
+        <span id="qtyValor">${configAtual.quantidade}</span>
+        <button onclick="mudarQtd(1)">+</button>
+      </div>
+    </div>
+  `;
+
+  /* RESUMO */
+  const calc = calcularPreco();
+  html += `
+    <div class="resumo">
+      <div class="resumo-linha"><span>Preço base</span><span>R$ ${calc.base.toFixed(2).replace('.', ',')}</span></div>
+      ${calc.addVidro ? `<div class="resumo-linha"><span>Vidro colorido</span><span>+ R$ ${calc.addVidro.toFixed(2).replace('.', ',')}</span></div>` : ''}
+      ${calc.addCor ? `<div class="resumo-linha"><span>Cor do alumínio</span><span>+ R$ ${calc.addCor.toFixed(2).replace('.', ',')}</span></div>` : ''}
+      ${calc.addPuxador ? `<div class="resumo-linha"><span>Puxador</span><span>+ R$ ${calc.addPuxador.toFixed(2).replace('.', ',')}</span></div>` : ''}
+      ${calc.addPelicula ? `<div class="resumo-linha"><span>Película ${nomePelicula(configAtual.pelicula).toLowerCase()}</span><span>+ R$ ${calc.addPelicula.toFixed(2).replace('.', ',')}</span></div>` : ''}
+      ${calc.addCartao ? `<div class="resumo-linha"><span>Taxa do cartão</span><span>+ R$ ${calc.addCartao.toFixed(2).replace('.', ',')}</span></div>` : ''}
+      <div class="resumo-linha"><span>Quantidade</span><span>${configAtual.quantidade}x</span></div>
+      <div class="resumo-linha total"><span>Total</span><span>R$ ${(calc.total * configAtual.quantidade).toFixed(2).replace('.', ',')}</span></div>
+    </div>
+    <button class="btn-add" onclick="adicionarAoCarrinho()">➕ Adicionar ao Carrinho</button>
+  `;
+
+  corpo.innerHTML = html;
+}
+
+/* ============================================================
+   MUDAR QUANTIDADE
+   ============================================================ */
+function mudarQtd(delta) {
+  const nova = configAtual.quantidade + delta;
+  if (nova < 1) return;
+  if (nova > 99) return;
+  configAtual.quantidade = nova;
+  montarModal();
+}
+
+/* ============================================================
+   SETTERS
+   ============================================================ */
+function setFolha(f) {
+  configAtual.folha = f;
+  const prod = PRODUTOS.find(p => p.id === configAtual.produtoId);
+  configAtual.medida = Object.keys(prod.precosBase[f])[0];
+  if (prod.peliculaSoFolha && configAtual.folha !== prod.peliculaSoFolha) {
+    configAtual.pelicula = 'nenhuma';
+  }
+  montarModal();
+}
+function setMedida(m) { configAtual.medida = m; montarModal(); }
+function setVidro(v) { configAtual.vidro = v; montarModal(); }
+function setCor(c) { configAtual.cor = c; montarModal(); }
+
+function setPuxador(p) {
+  configAtual.puxador = p;
+  if (p === 'sim') configAtual.fechadura = 'nao';
+  montarModal();
+}
+
+function setFechadura(f) {
+  configAtual.fechadura = f;
+  if (f === 'sim') configAtual.puxador = 'nao';
+  montarModal();
+}
+
+function setPelicula(p) { configAtual.pelicula = p; montarModal(); }
+function setPagamento(p) { configAtual.pagamento = p; montarModal(); }
+
+/* ============================================================
+   CÁLCULO DE PREÇO
+   ============================================================ */
+function calcularPreco() {
+  const prod = PRODUTOS.find(p => p.id === configAtual.produtoId);
+
+  let base;
+  if (prod.folhas) {
+    base = prod.precosBase[configAtual.folha][configAtual.medida];
+  } else {
+    base = prod.precosBase[configAtual.medida];
+  }
+
+  const addVidro = prod.vidrosSemTaxa.includes(configAtual.vidro) ? 0 : ADICIONAIS.vidroColorido;
+
+  const subtotal1 = base + addVidro;
+  const addCor = prod.coresSemTaxa.includes(configAtual.cor) ? 0 : subtotal1 * ADICIONAIS.taxaCor;
+
+  const addPuxador = (prod.temPuxador && configAtual.puxador === 'sim') ? ADICIONAIS.puxador : 0;
+
+  const temPelicula = configAtual.pelicula && configAtual.pelicula !== 'nenhuma';
+  const addPelicula = temPelicula ? ADICIONAIS.pelicula : 0;
+
+  const subtotal2 = subtotal1 + addCor + addPuxador + addPelicula;
+  const addCartao = configAtual.pagamento === 'cartao' ? subtotal2 * ADICIONAIS.taxaCartao : 0;
+
+  const total = subtotal2 + addCartao;
+
+  return { base, addVidro, addCor, addPuxador, addPelicula, addCartao, total };
+}
+/* ============================================================
+   ADICIONAR AO CARRINHO
+   ============================================================ */
+function adicionarAoCarrinho() {
+  const prod = PRODUTOS.find(p => p.id === configAtual.produtoId);
+  const calc = calcularPreco();
+
+  const item = {
+    id: Date.now(),
+    produto: prod.nome,
+    folha: configAtual.folha,
+    medida: configAtual.medida,
+    vidro: configAtual.vidro,
+    cor: configAtual.cor,
+    puxador: configAtual.puxador,
+    fechadura: configAtual.fechadura,
+    pelicula: configAtual.pelicula,
+    pagamento: configAtual.pagamento,
+    temFolhas: !!prod.folhas,
+    temPuxador: prod.temPuxador,
+    temFechadura: prod.temFechadura,
+    quantidade: configAtual.quantidade,
+    precoUnitario: calc.total,
+    total: calc.total * configAtual.quantidade
+  };
+
+  carrinho.push(item);
+  atualizarBadge();
+  fecharModal();
+  abrirCarrinho();
+}
+
+/* ============================================================
+   ATUALIZAR CONTADORES
+   ============================================================ */
+function atualizarBadge() {
+  const totalItens = carrinho.reduce((soma, i) => soma + i.quantidade, 0);
+  const badge1 = document.getElementById('badgeCarrinho');
+  const badge2 = document.getElementById('badgeTopo');
+  if (badge1) badge1.textContent = totalItens;
+  if (badge2) badge2.textContent = totalItens;
+}
+
+/* ============================================================
+   ABRIR / FECHAR CARRINHO
+   ============================================================ */
+function abrirCarrinho() {
+  renderizarCarrinho();
+  document.getElementById('carrinhoFundo').classList.add('aberto');
+}
+function fecharCarrinho() {
+  document.getElementById('carrinhoFundo').classList.remove('aberto');
+}
+
+/* ============================================================
+   RENDERIZAR CARRINHO
+   ============================================================ */
+function renderizarCarrinho() {
+  const corpo = document.getElementById('carrinhoCorpo');
+
+  if (carrinho.length === 0) {
+    corpo.innerHTML = '<div class="vazio">🛒 Seu carrinho está vazio.<br>Escolha um produto pra começar!</div>';
+    return;
+  }
+
+  let html = '';
+  let totalGeral = 0;
+
+  carrinho.forEach(item => {
+    totalGeral += item.total;
+
+    let detalhes = [];
+    if (item.temFolhas) detalhes.push(item.folha === '1' ? '1 folha' : item.folha + ' folhas');
+    detalhes.push(`Medida: ${item.medida.replace('x', ' × ')} mm`);
+    detalhes.push(`Vidro: ${item.vidro}`);
+    detalhes.push(`Alumínio: ${item.cor}`);
+    if (item.temPuxador && item.puxador === 'sim') detalhes.push('Com puxador');
+    if (item.temFechadura && item.fechadura === 'sim') detalhes.push('Com fechadura e maçaneta');
+    if (item.pelicula && item.pelicula !== 'nenhuma') detalhes.push(`Película: ${item.pelicula}`);
+    detalhes.push(`Pagamento: ${item.pagamento === 'pix' ? 'Pix/Dinheiro' : 'Cartão'}`);
+
+    html += `
+      <div class="item-carrinho">
+        <div class="info">
+          <h4>${item.produto}</h4>
+          <p>${detalhes.join(' · ')}</p>
+          <span class="qtd-carrinho">Qtd: ${item.quantidade}</span>
+        </div>
+        <div style="text-align:right">
+          <div class="valor">R$ ${item.total.toFixed(2).replace('.', ',')}</div>
+          <button class="btn-remover" onclick="removerItem(${item.id})">🗑️</button>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `
+    <div class="resumo" style="margin-top:16px">
+      <div class="resumo-linha total">
+        <span>Total do Pedido</span>
+        <span>R$ ${totalGeral.toFixed(2).replace('.', ',')}</span>
+      </div>
+    </div>
+    <button class="btn-wpp-enviar" onclick="enviarWhatsApp()">📲 Enviar Pedido pelo WhatsApp</button>
+  `;
+
+  corpo.innerHTML = html;
+}
+
+/* ============================================================
+   REMOVER ITEM
+   ============================================================ */
+function removerItem(id) {
+  carrinho = carrinho.filter(i => i.id !== id);
+  atualizarBadge();
+  renderizarCarrinho();
+}
+
+/* ============================================================
+   ENVIAR PARA O WHATSAPP
+   ============================================================ */
+function enviarWhatsApp() {
+  if (carrinho.length === 0) return;
+
+  const numero = '5521992396653';
+  let texto = '🪟 *NOVO PEDIDO — Azevedo Vidros*\n';
+  texto += '━━━━━━━━━━━━━━━━━━━━\n\n';
+
+  let totalGeral = 0;
+
+  carrinho.forEach((item, i) => {
+    totalGeral += item.total;
+    texto += `*${i + 1}. ${item.produto}*\n`;
+    if (item.temFolhas) texto += `• Folhas: ${item.folha}\n`;
+    texto += `• Medida: ${item.medida.replace('x', ' × ')} mm\n`;
+    texto += `• Vidro: ${item.vidro}\n`;
+    texto += `• Alumínio: ${item.cor}\n`;
+    if (item.temPuxador && item.puxador === 'sim') texto += `• Puxador: sim\n`;
+    if (item.temFechadura && item.fechadura === 'sim') texto += `• Fechadura com maçaneta: sim\n`;
+    if (item.pelicula && item.pelicula !== 'nenhuma') texto += `• Película: ${item.pelicula}\n`;
+    texto += `• Pagamento: ${item.pagamento === 'pix' ? 'Pix/Dinheiro' : 'Cartão'}\n`;
+    texto += `• Quantidade: ${item.quantidade}\n`;
+    texto += `• Valor unitário: R$ ${item.precoUnitario.toFixed(2).replace('.', ',')}\n`;
+    texto += `• Subtotal: R$ ${item.total.toFixed(2).replace('.', ',')}\n\n`;
+  });
+
+  texto += '━━━━━━━━━━━━━━━━━━━━\n';
+  texto += `💰 *TOTAL: R$ ${totalGeral.toFixed(2).replace('.', ',')}*\n\n`;
+  texto += 'Aguardo o contato para finalizar! 🙏';
+
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+  window.open(url, '_blank');
+}
+
+/* ============================================================
+   INICIALIZAÇÃO FINAL
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  renderizarVitrine(PRODUTOS);
+  atualizarBadge();
+});
+</script>
+</body>
+</html>
