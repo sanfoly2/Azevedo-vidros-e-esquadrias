@@ -1,6 +1,6 @@
 // Service Worker da Azevedo Vidros - PWA
 const CACHE_NAME = 'azevedo-vidros-v1';
-const CACHE_FOTOS = 'azevedo-vidros-fotos-v6';
+const CACHE_FOTOS = 'azevedo-vidros-fotos-v7';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
